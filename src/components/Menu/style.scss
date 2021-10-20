@@ -1,0 +1,40 @@
+.menu {
+  width: 20em;
+  height: 100%;
+  background-color: #0071FF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__logo {
+    width: 10em;
+    height: 5em;
+    margin: 2em 0 4em 0;
+  }
+
+  &__nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__link {
+      width: 80%;
+      height: 2em;
+      margin: 0.1em 0;
+      padding: 0.2em 0;
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: #ADD1FF;
+
+      &--active {
+        color: #FFFFFF;
+      }
+
+      &__logo {
+        margin: 0 0.8em 0 0;
+      }
+    }
+  }
+}
