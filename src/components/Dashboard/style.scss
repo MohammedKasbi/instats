@@ -1,0 +1,52 @@
+.dashboard {
+  grid-area: content;
+  display: grid;
+  grid-template-areas:
+    "wallet transactions"
+    "graphic graphic";
+  grid-template-rows: 20em 1fr;
+  grid-gap: 1em;
+  padding: 1em;
+
+  &__wallet {
+    grid-area: wallet;
+    background-color: rgb(70, 70, 70);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    &__dollars {
+      background-color: rgb(107, 107, 86);
+      width: 20%;
+      height: 5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &__percentage {
+      background-color: rgb(107, 107, 86);
+      width: 20%;
+      height: 5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  &__transactions {
+    grid-area: transactions;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(70, 70, 70);
+  }
+
+  &__graphic {
+    grid-area: graphic;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(70, 70, 70);
+  }
+}
