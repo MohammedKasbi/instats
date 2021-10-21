@@ -1,7 +1,9 @@
 import './style.scss';
 
 const Statistics = () => (
-  <div>Statistics</div>
+  <div className="statistics">
+    Statistiques
+  </div>
 );
 
 export default Statistics;

@@ -1,7 +1,9 @@
 import './style.scss';
 
 const Wallet = () => (
-  <div>Wallet</div>
+  <div className="wallet">
+    Portefeuille
+  </div>
 );
 
 export default Wallet;

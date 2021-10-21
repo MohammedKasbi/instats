@@ -1,7 +1,9 @@
 import './style.scss';
 
 const History = () => (
-  <div>History</div>
+  <div className="history">
+    Historique
+  </div>
 );
 
 export default History;
