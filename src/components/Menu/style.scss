@@ -59,6 +59,7 @@
     &__avatar {
       width: 3.5em;
       height: 3.5em;
+      object-fit: cover;
       border-radius: 50%;
       background-color: white;
       margin: .875em .5em 0 .875em;

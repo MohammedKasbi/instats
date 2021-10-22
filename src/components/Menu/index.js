@@ -20,7 +20,11 @@ const Menu = () => (
       <NavLink className="menu__nav__link" activeClassName="menu__nav__link--active" to='/historique'><RiHistoryLine className="menu__nav__link__logo" size="1.5em" />Historique</NavLink>
     </div>
     <Link className="menu__profile" to='/profil'>
-      <div className="menu__profile__avatar" />
+      <img
+        src="https://media.comicbook.com/2021/01/one-piece-wano-luffy-cosplay-1252700.jpeg?auto=webp&width=1200&height=627&crop=1200:627,smart"
+        alt="Profil"
+        className="menu__profile__avatar"
+      />
       <div className="menu__profile__data">
         <span className="menu__profile__data__name">Nom d'utilisateur</span>
         <span className="menu__profile__data__email">examplemail@gmail.com</span>
