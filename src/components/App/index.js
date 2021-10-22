@@ -1,14 +1,17 @@
 // imports
+import { Route, Switch } from 'react-router';
 
 // imports persos
 import './style.scss';
+
+// imports composants
 import Menu from '../Menu';
 import Dashboard from '../Dashboard';
 import Wallet from '../Wallet';
 import AddTransaction from '../AddTransaction';
 import Statistics from '../Statistics';
 import History from '../History';
-import { Route, Switch } from 'react-router';
+import Profile from '../Profile';
 
 function App() {
   return (
@@ -29,6 +32,9 @@ function App() {
         </Route>
         <Route path="/historique">
           <History />
+        </Route>
+        <Route path="/profil">
+          <Profile />
         </Route>
       </Switch>
     </div>
