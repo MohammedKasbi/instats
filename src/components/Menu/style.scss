@@ -6,6 +6,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 
   &__logo {
     width: 100%;
@@ -20,7 +21,8 @@
   &__nav {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    height: 100%;
 
     &__link {
       height: 2em;
@@ -35,12 +37,46 @@
 
       &--active {
         color: #FFFFFF;
-        background-color: #005fd3;
         border-radius: 0.2em;
       }
 
       &__logo {
         margin: 0 0.8em 0 0;
+      }
+    }
+  }
+
+  &__profile {
+    width: 80%;
+    height: 7.5em;
+    margin: 0 0 2em 0;
+    display: flex;
+    border-radius: 3.75em;
+    background-color: #1E82FF;
+    border: #4E9CFF solid 1px;
+    text-decoration: none;
+
+    &__avatar {
+      width: 3.5em;
+      height: 3.5em;
+      object-fit: cover;
+      border-radius: 50%;
+      background-color: white;
+      margin: .875em .5em 0 .875em;
+      flex-shrink: 0;
+    }
+
+    &__data {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      &__name {
+        font-size: 1.1em;
+      }
+
+      &__email {
+        font-size: 0.6em;
       }
     }
   }
