@@ -10,27 +10,53 @@
 
   &__wallet {
     grid-area: wallet;
-    background-color: rgb(70, 70, 70);
     display: flex;
     align-items: center;
     justify-content: space-around;
 
     &__dollars {
-      background-color: rgb(107, 107, 86);
       width: 20%;
       height: 5em;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
+
+      &__tag {
+        font-size: 0.8em;
+        color: #3B618F;
+      }
+
+      &__value {
+        font-size: 2.5em;
+      }
+
+      &__converted {
+        font-size: 1.5em;
+        color: #5F7187;
+      }
     }
 
     &__percentage {
-      background-color: rgb(107, 107, 86);
       width: 20%;
       height: 5em;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
+
+      &__tag {
+        font-size: 0.8em;
+        color: #3B618F;
+      }
+
+      &__value {
+        font-size: 2.5em;
+        color: #00B007;
+      }
+
+      &__converted {
+        font-size: 1.5em;
+        color: #5F7187;
+      }
     }
   }
 
