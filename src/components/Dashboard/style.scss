@@ -63,9 +63,16 @@
   &__transactions {
     grid-area: transactions;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgb(70, 70, 70);
+
+    & span {
+      padding: 0.25em;
+      margin: 0.15em;
+      width: 100%;
+      background-color: #1A202B;
+    }
   }
 
   &__graphic {
@@ -73,6 +80,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(70, 70, 70);
   }
 }
