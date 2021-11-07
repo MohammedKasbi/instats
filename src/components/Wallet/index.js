@@ -45,9 +45,21 @@ const Wallet = () => {
       <div className="wallet__doughnut">
         <Doughnut data={doughnutData} options={doughnutOptions} />
         <div className="wallet__doughnut__data">
-          <span className="wallet__doughnut__data__tag">Capital Total {viewData ? <AiOutlineEye className="wallet__doughnut__data__tag__eye" onClick={handleShowData} /> : <AiOutlineEyeInvisible className="wallet__doughnut__data__tag__eye" onClick={handleShowData} />}</span>
-          <span className="wallet__doughnut__data__value">$109,455,850.25</span>
-          <span className="wallet__doughnut__data__converted">109,440,850.25€</span>
+          <span className="wallet__doughnut__data__tag">Capital Total
+            {viewData
+            ? <AiOutlineEye className="wallet__doughnut__data__tag__eye" onClick={handleShowData} />
+            : <AiOutlineEyeInvisible className="wallet__doughnut__data__tag__eye" onClick={handleShowData} />}
+          </span>
+          <span className="wallet__doughnut__data__value">
+            {viewData
+            ? "$109,455,850.25"
+            : "$***,***,***.**"}
+          </span>
+          <span className="wallet__doughnut__data__converted">
+            {viewData
+            ? "109,440,850.25€"
+            : "***,***,***.**€"}
+          </span>
         </div>
       </div>
       <div className="wallet__pie-accounts"></div>
