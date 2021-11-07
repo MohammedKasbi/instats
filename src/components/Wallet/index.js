@@ -1,15 +1,19 @@
 import { useState } from 'react';
 import { Doughnut  } from 'react-chartjs-2';
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import Account from '../Account';
 import './style.scss';
 
 const Wallet = () => {
   const [viewData, setViewData] = useState(true);
 
+  const accountsNames = ['FIN888', 'EmpireX', 'Gold Robot', 'TTD', 'UAG Trade', 'Whalinvest'];
+  const capitals = [3000, 2500, 2000, 1500, 1000, 500];
+
   const doughnutData = {
-    labels: ['FIN888', 'EmpireX', 'Gold Robot', 'TTD', 'UAG Trade', 'Whalinvest'],
+    labels: accountsNames,
     datasets: [{
-      data: [3000, 2500, 2000, 1500, 1000, 500],
+      data: capitals,
       backgroundColor: [
         'rgba(252, 145, 65, 1)',
         'rgba(61, 255, 249, 1)',
@@ -29,7 +33,7 @@ const Wallet = () => {
     responsive: true,
     plugins: {
       legend: {
-        display: false,
+        // display: false,
         position: 'bottom',
       },
     },
@@ -62,8 +66,22 @@ const Wallet = () => {
           </span>
         </div>
       </div>
-      <div className="wallet__pie-accounts"></div>
-      <div className="wallet__accounts-list"></div>
+      <div className="wallet__accounts-list">
+        <Account
+          img='A'
+          name='Compte A'
+          value='3,034.24'
+          percent='10.58'
+          dollar='511.95'
+        />
+        <Account
+          img='B'
+          name='Compte B'
+          value='3,034.24'
+          percent='10.58'
+          dollar='511.95'
+        />
+      </div>
     </div>
   );
 };
