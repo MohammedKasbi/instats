@@ -2,7 +2,7 @@ import './style.scss';
 
 const Profile = () => (
   <div className="profile">
-    Profil
+    bientôt...
   </div>
 );
 

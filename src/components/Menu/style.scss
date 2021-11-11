@@ -1,3 +1,5 @@
+@use '../../styles/vars';
+
 .menu {
   -webkit-touch-callout: none; /* iOS Safari */
   -webkit-user-select: none; /* Safari */
@@ -7,7 +9,7 @@
   user-select: none;
   width: 100%;
   height: 100%;
-  background-color: #0071FF;
+  background-color: vars.$main-color;
   grid-area: menu;
   display: flex;
   flex-direction: column;
@@ -61,6 +63,10 @@
     background-color: #1E82FF;
     border: #4E9CFF solid 1px;
     text-decoration: none;
+
+    &:hover {
+      background-color: vars.$main-color;
+    }
 
     &__avatar {
       width: 3.5em;

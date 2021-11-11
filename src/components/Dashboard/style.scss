@@ -1,3 +1,5 @@
+@use '../../styles/vars';
+
 .dashboard {
   grid-area: content;
   display: grid;
@@ -23,16 +25,17 @@
 
       &__tag {
         font-size: 0.8em;
-        color: #3B618F;
+        color: vars.$title-lvl-3;
       }
 
       &__value {
         font-size: 2.5em;
+        color: vars.$title-lvl-1;
       }
 
       &__converted {
         font-size: 1.5em;
-        color: #5F7187;
+        color: vars.$title-lvl-2;
       }
     }
 
@@ -45,17 +48,17 @@
 
       &__tag {
         font-size: 0.8em;
-        color: #3B618F;
+        color: vars.$title-lvl-3;
       }
 
       &__value {
         font-size: 2.5em;
-        color: #00B007;
+        color: vars.$positive;
       }
 
       &__converted {
         font-size: 1.5em;
-        color: #5F7187;
+        color: vars.$title-lvl-2;
       }
     }
   }
@@ -71,7 +74,7 @@
       padding: 0.25em;
       margin: 0.15em;
       width: 100%;
-      background-color: #1A202B;
+      background-color: vars.$background-bar-boxes;
     }
   }
 

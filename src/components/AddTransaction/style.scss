@@ -1,3 +1,19 @@
+@use '../../styles/vars';
+
 .add-transaction {
-    grid-area: content;
+  grid-area: content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    max-width: 30em;
+    height: 100%;
+    max-height: 30em;
+    background-color: vars.$background-boxes;
+  }
 }
