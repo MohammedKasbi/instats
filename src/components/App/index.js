@@ -36,6 +36,9 @@ function App() {
         <Route path="/profil">
           <Profile />
         </Route>
+        <Route path="/nouveau-compte">
+          ajouter un compte
+        </Route>
       </Switch>
     </div>
   );

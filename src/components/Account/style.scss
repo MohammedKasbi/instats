@@ -1,8 +1,10 @@
+@use '../../styles/vars';
+
 .account {
   display: flex;
   width: 100%;
   max-width: 40em;
-  background-color: #1A202B;
+  background-color: vars.$background-bar-boxes;
   padding: 1em;
   border-radius: 0.2em;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.555);
@@ -43,14 +45,14 @@
   }
 
   &__value {
-    color: #424753;
+    color: vars.$title-lvl-2;
   }
 
   &__percent {
-    color: #00904C;
+    color: vars.$positive;
   }
 
   &__dollar {
-    color: #424753;
+    color: vars.$title-lvl-2;
   }
 }

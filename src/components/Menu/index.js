@@ -16,8 +16,8 @@ const Menu = () => (
       <NavLink className="menu__nav__link" activeClassName="menu__nav__link--active" exact to='/'><BiHomeAlt className="menu__nav__link__logo" size="1.5em" />Tableau de bord</NavLink>
       <NavLink className="menu__nav__link" activeClassName="menu__nav__link--active" to='/portefeuille'><BiWalletAlt className="menu__nav__link__logo" size="1.5em" />Portefeuille</NavLink>
       <NavLink className="menu__nav__link" activeClassName="menu__nav__link--active" to='/ajouter-transaction'><AiOutlinePlusCircle className="menu__nav__link__logo" size="1.5em" />Ajouter transaction</NavLink>
-      <NavLink className="menu__nav__link" activeClassName="menu__nav__link--active" to='/statistiques'><MdQueryStats className="menu__nav__link__logo" size="1.5em" />Statistiques</NavLink>
       <NavLink className="menu__nav__link" activeClassName="menu__nav__link--active" to='/historique'><RiHistoryLine className="menu__nav__link__logo" size="1.5em" />Historique</NavLink>
+      <NavLink className="menu__nav__link" activeClassName="menu__nav__link--active" to='/statistiques'><MdQueryStats className="menu__nav__link__logo" size="1.5em" />Statistiques</NavLink>
     </div>
     <Link className="menu__profile" to='/profil'>
       <img

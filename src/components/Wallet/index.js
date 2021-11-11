@@ -66,7 +66,8 @@ const Wallet = () => {
           </span>
         </div>
       </div>
-      <div className="wallet__accounts-list">
+      <span className="wallet__title__account">Comptes</span>
+      <div className="wallet__accounts">
         <Account
           img='A'
           name='Compte A'

@@ -13,7 +13,7 @@
   &__doughnut {
     height: 20em;
     width: 100%;
-    padding: 1em;
+    padding: 1em 0 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -23,7 +23,7 @@
       display: flex;
       flex-direction: column;
       position: absolute;
-      top: 7em;
+      top: 6.5em;
       text-align: center;
 
       &__tag {
@@ -55,10 +55,21 @@
     }
   }
 
-  &__accounts-list {
+  &__accounts {
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  &__title__account {
+    font-size: 0.7em;
+    color: #424753;
+    text-transform: uppercase;
+    letter-spacing: .17em;
+    width: 100%;
+    max-width: 55em;
+    text-align: left;
+    padding: 1.5em 0;
   }
 }

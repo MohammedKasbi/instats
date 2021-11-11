@@ -2,7 +2,7 @@ import './style.scss';
 
 const Statistics = () => (
   <div className="statistics">
-    Statistiques
+    bientôt...
   </div>
 );
 
