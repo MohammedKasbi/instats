@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { Doughnut  } from 'react-chartjs-2';
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useSelector } from 'react-redux';
+import { numberToComma } from '../../selectors/numberToComma';
 import Account from '../Account';
 import './style.scss';
 
 const Wallet = () => {
   const [viewData, setViewData] = useState(true);
-
-  const accountsNames = ['FIN888', 'EmpireX', 'Gold Robot', 'TTD', 'UAG Trade', 'Whalinvest'];
-  const capitals = [3000, 2500, 2000, 1500, 1000, 500];
+  const accountsNames = useSelector((state) => state.wallet.accountsNames);
+  const capitals = useSelector((state) => state.wallet.capitals);
+  const accountsData = useSelector((state) => state.wallet.accountsData);
+  const accountValue = useSelector((state) => state.wallet.accountValue);
+  const accountValueConverted = useSelector((state) => state.wallet.accountValueConverted);
 
   const doughnutData = {
     labels: accountsNames,
@@ -33,7 +37,7 @@ const Wallet = () => {
     responsive: true,
     plugins: {
       legend: {
-        // display: false,
+        display: false,
         position: 'bottom',
       },
     },
@@ -56,32 +60,30 @@ const Wallet = () => {
           </span>
           <span className="wallet__doughnut__data__value">
             {viewData
-            ? "$109,455,850.25"
-            : "$***,***,***.**"}
+            ? numberToComma(accountValue)
+            : numberToComma(accountValue).replaceAll(/[0123456789]/g, '*')}
           </span>
           <span className="wallet__doughnut__data__converted">
             {viewData
-            ? "109,440,850.25€"
-            : "***,***,***.**€"}
+            ? numberToComma(accountValueConverted)
+            : numberToComma(accountValueConverted).replaceAll(/[0123456789]/g, '*')}
           </span>
         </div>
       </div>
+      {/* <div className="wallet__links">ajouter ici des étiquettes cliquables</div> */}
       <span className="wallet__title__account">Comptes</span>
       <div className="wallet__accounts">
-        <Account
-          img='A'
-          name='Compte A'
-          value='3,034.24'
-          percent='10.58'
-          dollar='511.95'
-        />
-        <Account
-          img='B'
-          name='Compte B'
-          value='3,034.24'
-          percent='10.58'
-          dollar='511.95'
-        />
+        {accountsData.map((elem) => (
+          <Account
+            key={elem.id}
+            id={elem.id}
+            img={elem.image}
+            name={elem.name}
+            value={elem.capital}
+            percent={elem.percent}
+            dollar={elem.percentConverted}
+          />
+        ))}
       </div>
     </div>
   );
