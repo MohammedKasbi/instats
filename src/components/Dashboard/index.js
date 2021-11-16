@@ -1,6 +1,7 @@
 import './style.scss';
 import { Line  } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
+import { numberToComma } from '../../selectors/numberToComma';
 
 const Dashboard = () => {
   const dates = useSelector((state) => state.dashboard.dates);
@@ -46,13 +47,13 @@ const Dashboard = () => {
       <div className="dashboard__wallet">
         <div className="dashboard__wallet__dollars">
           <span className="dashboard__wallet__dollars__tag">Portefeuille</span>
-          <span className="dashboard__wallet__dollars__value">${accountValue}</span>
-          <span className="dashboard__wallet__dollars__converted">€{accountValueConverted}</span>
+          <span className="dashboard__wallet__dollars__value">${numberToComma(accountValue)}</span>
+          <span className="dashboard__wallet__dollars__converted">€{numberToComma(accountValueConverted)}</span>
         </div>
         <div className="dashboard__wallet__percentage">
           <span className="dashboard__wallet__percentage__tag">Evolution dernières 24h</span>
-          <span className="dashboard__wallet__percentage__value">+{accountPercent}%</span>
-          <span className="dashboard__wallet__percentage__converted">+ ${accountPercentConverted}</span>
+          <span className="dashboard__wallet__percentage__value">+{numberToComma(accountPercent)}%</span>
+          <span className="dashboard__wallet__percentage__converted">+ ${numberToComma(accountPercentConverted)}</span>
         </div>
       </div>
       <div className="dashboard__transactions">

@@ -45,6 +45,10 @@ const History = () => {
     console.log(evt.target.value);
   }
 
+  const handleChange = (evt) => {
+    console.log(evt.target.value);
+  }
+
   return (
     <div className="history">
       <div className="history__data-select">
@@ -53,7 +57,7 @@ const History = () => {
           <button value='week' onClick={handleClick}>S</button>
           <button value='month' onClick={handleClick}>M</button>
           <button value='year' onClick={handleClick}>A</button>
-          <select name="select-account" id="select-account">
+          <select name="select-account" id="select-account" onChange={handleChange}>
             <option value="all-accounts">Tous les comptes</option>
             <option value="comptea">Compte A</option>
             <option value="compteb">Compte B</option>
