@@ -1,15 +1,20 @@
 const initialState = {
   loading: true,
+  newAccountValue: '',
 };
 
 const reducer = (state = initialState, action = {}) => {
   switch (action.type) {
-    case 'SAVE_ACCOUNTS_LIST':
+    case 'CHANGE_NEW_ACCOUNT_VALUE':
       return {
         ...state,
-        loading: false,
-        accountsList: action.accountsList,
+        newAccountValue: action.value
       };
+    case 'NEW_ACCOUNT_ADDED':
+      return {
+        ...state,
+        newAccountValue: '',
+      }
     default:
       return state;
   }

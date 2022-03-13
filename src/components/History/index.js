@@ -1,11 +1,14 @@
 import './style.scss';
 import { Line  } from 'react-chartjs-2';
 import Account from '../Account';
+import { useSelector } from 'react-redux';
 
 const History = () => {
   const dates = ['31/10', '01/11', '02/11', '03/11', '04/11', '05/11', '06/11', '07/11', '08/11', '09/11',];
   const dailyGains = [3, 20, 5, 12, 15, 16, 20, 19, 22, 27];
-  
+
+  const accountsData = useSelector((state) => state.history.accountsData);
+
   const lineData = {
     labels: dates,
     datasets: [{
@@ -59,9 +62,9 @@ const History = () => {
           <button value='year' onClick={handleClick}>A</button>
           <select name="select-account" id="select-account" onChange={handleChange}>
             <option value="all-accounts">Tous les comptes</option>
-            <option value="comptea">Compte A</option>
-            <option value="compteb">Compte B</option>
-            <option value="comptec">Compte C</option>
+            {accountsData.map((elem) => (
+              <option key={elem.id} value={elem.id}>{elem.name}</option>
+            ))}
           </select>
         </form>
       </div>
@@ -69,27 +72,17 @@ const History = () => {
         <Line data={lineData} options={lineOptions} />
       </div>
       <div className="history__account-list">
-        <Account
-          img='A'
-          name='Compte A'
-          value='3,034.24'
-          percent='10.58'
-          dollar='511.95'
-        />
-        <Account
-          img='B'
-          name='Compte B'
-          value='3,034.24'
-          percent='10.58'
-          dollar='511.95'
-        />
-        <Account
-          img='C'
-          name='Compte C'
-          value='3,034.24'
-          percent='10.58'
-          dollar='511.95'
-        />
+        {accountsData.map((elem) => (
+          <Account
+            key={elem.id}
+            id={elem.id}
+            img={elem.image}
+            name={elem.name}
+            value={elem.capital}
+            percent={elem.percent}
+            dollar={elem.percentConverted}
+          />
+        ))}
       </div>
     </div>
   );

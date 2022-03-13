@@ -12,14 +12,33 @@ import AddTransaction from '../AddTransaction';
 import Statistics from '../Statistics';
 import History from '../History';
 import Profile from '../Profile';
+import DetailAccount from '../DetailAccount';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import AddAccount from '../AddAccount';
+// import moment from 'moment/dist/moment';
+// import 'moment/dist/locale/fr';
 
 function App() {
+  // moment.locale('fr');
+
+  const dispatch = useDispatch();
+  const accountsList = useSelector((state) => state.dashboard.accountsList);
+
+  useEffect(() => {
+    dispatch({
+      type: 'FETCH_ACCOUNTS_LIST',
+    });
+  }, [dispatch]);
+
+
+
   return (
     <div className="App">
       <Menu />
       <Switch>
         <Route exact path="/">
-          <Dashboard />
+          <Dashboard accountsList={accountsList} />
         </Route>
         <Route path="/portefeuille">
           <Wallet />
@@ -36,8 +55,11 @@ function App() {
         <Route path="/profil">
           <Profile />
         </Route>
+        <Route path="/compte/:id">
+          <DetailAccount />
+        </Route>
         <Route path="/nouveau-compte">
-          ajouter un compte
+          <AddAccount />
         </Route>
       </Switch>
     </div>

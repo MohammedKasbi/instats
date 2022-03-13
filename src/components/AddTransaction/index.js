@@ -12,10 +12,10 @@ const AddTransaction = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    // console.log(newType);
-    // console.log(newAccount);
-    // console.log(newDate);
-    // console.log(newAmount);
+    console.log(newType);
+    console.log(newAccount);
+    console.log(newDate);
+    console.log(newAmount);
   }
 
   const handleChangeAmountValue = (evt) => {

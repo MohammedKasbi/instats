@@ -4,19 +4,16 @@ import { numberToComma } from '../../selectors/numberToComma';
 
 import './style.scss';
 
-const Account = ({ id, img, name, value, percent, dollar}) => (
+const Account = ({ id, name, value, percent, dollar}) => (
   <Link className="account" to={`/compte/${id}`}>
-    {img
-    ? <img className="account__img" src={img} alt={`Compte ${name}`} />
-    : <div className='account__img'></div>}
     <div className="account__container">
       <div className="account__container__left">
         <span className="account__name">{name}</span>
-        <span className="account__value">$ {numberToComma(value)}</span>
+        <span className="account__value">$ {numberToComma(value.toFixed(2))}</span>
       </div>
       <div className="account__container__right">
-        <span className="account__percent">+ {numberToComma(percent)} %</span>
-        <span className="account__dollar">+ $ {numberToComma(dollar)}</span>
+        <span className="account__percent">{percent > 0 ? '+' : ''}{numberToComma(percent ? Math.round(percent * 10000) / 100 : 0)} %</span>
+        <span className="account__dollar">{dollar > 0 ? '+' : ''}{numberToComma(dollar ? Math.round(dollar * 100) / 100 : 0)} $</span>
       </div>
     </div>
   </Link>
@@ -24,7 +21,6 @@ const Account = ({ id, img, name, value, percent, dollar}) => (
 
 Account.propTypes = {
   id: PropTypes.number.isRequired,
-  img: PropTypes.string,
   name: PropTypes.string.isRequired,
   value: PropTypes.number,
   percent: PropTypes.number,
@@ -32,10 +28,9 @@ Account.propTypes = {
 };
 
 Account.defaultProps = {
-  img: '',
-  value: '',
-  percent: '',
-  dollar: '',
+  value: 0,
+  percent: 0,
+  dollar: 0,
 }
 
 export default Account;
