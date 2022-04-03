@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { numberToComma } from '../../selectors/numberToComma';
 
 import './style.scss';
 
 const Account = ({ id, name, value, percent, dollar}) => (
-  <Link className="account" to={`/compte/${id}`}>
+  <div className="account" to={`/compte/${id}`}>
     <div className="account__container">
       <div className="account__container__left">
         <span className="account__name">{name}</span>
@@ -16,7 +16,7 @@ const Account = ({ id, name, value, percent, dollar}) => (
         <span className="account__dollar">{dollar > 0 ? '+' : ''}{numberToComma(dollar ? Math.round(dollar * 100) / 100 : 0)} $</span>
       </div>
     </div>
-  </Link>
+  </div>
 );
 
 Account.propTypes = {

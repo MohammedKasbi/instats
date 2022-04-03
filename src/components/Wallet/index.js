@@ -7,7 +7,7 @@ import { calculateSum } from '../../selectors/calculateSum';
 import { calculateTotalSum } from '../../selectors/calculateTotalSum';
 import { getAccountsName } from '../../selectors/getAccountsName';
 import { numberToComma } from '../../selectors/numberToComma';
-// import Account from '../Account';
+import Account from '../Account';
 import './style.scss';
 
 const Wallet = ({ accountsList }) => {
@@ -103,25 +103,28 @@ const Wallet = ({ accountsList }) => {
       {/* <div className="wallet__links">ajouter ici des étiquettes cliquables</div> */}
       <span className="wallet__title__account">Comptes</span>
       <div className="wallet__accounts">
-        {/* {accountsList.map((elem) => {
-          const deposits = elem.deposit.map(item => item.value).reduce((prev, curr) => prev + curr, 0);
-          const withdrawals = elem.withdrawal.map(item => item.value).reduce((prev, curr) => prev + curr, 0);
-          const results = elem.result.map(item => item.value).reduce((prev, curr) => prev + curr, 0);
+        {accountsList ?
+          accountsList.map((elem) => {
+            let tempSum = 0;
+            let tempProfit = 0;
+            let tempDeposits = 0;
+            elem.results.forEach(element => {
+              tempSum += (element.dayResult + element.deposit - element.withdrawal);
+              tempProfit += element.dayResult;
+              tempDeposits += element.deposit;
+            })
 
-          const total = (deposits - withdrawals) + results;
-          const totalInvest = deposits - withdrawals;
-          const percent = (total - totalInvest) / totalInvest;
+            return (
+              <Account
+                key={elem.id}
+                id={elem.id}
+                name={elem.name}
+                value={tempSum}
+                percent={((tempDeposits + tempProfit) - tempDeposits) / tempDeposits}
+                dollar={tempProfit}
+              />)
 
-          return (
-            <Account
-              key={elem.id}
-              id={elem.id}
-              name={elem.name}
-              value={total}
-              percent={percent}
-              dollar={results}
-            />
-        )})} */}
+          }) : ''}
       </div>
     </div>
   );
