@@ -5,6 +5,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch, useSelector } from 'react-redux';
 import { calculateSum } from '../../selectors/calculateSum';
 import { calculateTotalSum } from '../../selectors/calculateTotalSum';
+import { getAccountsName } from '../../selectors/getAccountsName';
 import { numberToComma } from '../../selectors/numberToComma';
 // import Account from '../Account';
 import './style.scss';
@@ -33,7 +34,7 @@ const Wallet = ({ accountsList }) => {
   const totalWalletValueConverted = fx.convert(totalWalletValue);
 
   const accountsSum = calculateSum(accountsList);
-  const accountsNames = [];
+  const accountsNames = getAccountsName(accountsList);
 
   const doughnutData = {
     labels: accountsNames,
