@@ -8,12 +8,12 @@ import { calculateTotalSum } from '../../selectors/calculateTotalSum';
 // import 'moment/dist/locale/fr';
 
 const Dashboard = ({ accountsList }) => {
-  const loading = useSelector((state) => state.dashboard.loading);
+  const dataLoading = useSelector((state) => state.accountsData.loading);
   
   console.log(accountsList);
   const accountsListTotal = [];
 
-  if (accountsList) {
+/*   if (accountsList) {
     function compare( a, b ) {
       if ( a.transaction_at < b.transaction_at ){
         return -1;
@@ -28,8 +28,8 @@ const Dashboard = ({ accountsList }) => {
         for(let i = 0; i < array.length; ++i) {
           for(let j = i + 1; j < array.length; ++j) {
             if(array[i].transaction_at === array[j].transaction_at) {
-              console.log(array[i]);
-              console.log(array[j]);
+              console.log(array[i], i);
+              console.log(array[j], j);
               array[i].dayResult += array[j].dayResult;
               // array[i].deposit += array[j].deposit;
               // array[i].withdrawal += array[j].withdrawal;
@@ -73,7 +73,7 @@ const Dashboard = ({ accountsList }) => {
 
     console.log(accountsList);
     // console.log(accountsListTotal.sort(compare));
-  }
+  } */
 
 
 
@@ -129,10 +129,8 @@ const Dashboard = ({ accountsList }) => {
     },
   }
 
-  if (loading) {
-    return <div>
-      Chargement...
-    </div>
+  if (dataLoading) {
+    return <div>Chargement...</div>
   }
 
   return (

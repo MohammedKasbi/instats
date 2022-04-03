@@ -4,7 +4,7 @@ export const calculateTotalSum = (accountsList) => {
   if (accountsList) {
     accountsList.forEach(element => {
       element.results.forEach(elem => {
-        sum += elem.dayTotal;
+        sum += (elem.dayResult + elem.deposit - elem.withdrawal);
       });
     });
   }

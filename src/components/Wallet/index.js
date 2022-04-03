@@ -3,26 +3,21 @@ import { useEffect, useState } from 'react';
 import { Doughnut  } from 'react-chartjs-2';
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch, useSelector } from 'react-redux';
+import { calculateSum } from '../../selectors/calculateSum';
 import { calculateTotalSum } from '../../selectors/calculateTotalSum';
 import { numberToComma } from '../../selectors/numberToComma';
-import Account from '../Account';
+// import Account from '../Account';
 import './style.scss';
 
-const Wallet = () => {
+const Wallet = ({ accountsList }) => {
   const dispatch = useDispatch();
-
-  const [viewData, setViewData] = useState(true);
-
   const loading = useSelector((state) => state.wallet.loading);
-  const accountsList = useSelector((state) => state.wallet.accountsList);
 
   useEffect(() => {
     dispatch({
       type: 'FETCH_ACCOUNTS_LIST',
     });
   }, [dispatch]);
-
-  const totalWalletValue = calculateTotalSum(accountsList);
 
   fx.base = 'USD';
   fx.rates = {
@@ -33,26 +28,12 @@ const Wallet = () => {
     from: 'USD',
     to: 'EUR'
   };
-
+  
+  const totalWalletValue = calculateTotalSum(accountsList);
   const totalWalletValueConverted = fx.convert(totalWalletValue);
 
-  const accountsSum = [];
-
+  const accountsSum = calculateSum(accountsList);
   const accountsNames = [];
-
-  if (accountsList) {
-    for (let i = 0; i < accountsList.length; i++) {
-      const depositSum = accountsList[i].deposit.map(item => item.value).reduce((prev, curr) => prev + curr, 0);
-      const withdrawalSum = accountsList[i].withdrawal.map(item => item.value).reduce((prev, curr) => prev + curr, 0);
-      const resultSum = accountsList[i].result.map(item => item.value).reduce((prev, curr) => prev + curr, 0);
-      const sum = (depositSum - withdrawalSum) + resultSum;
-      accountsSum[i] = sum;
-    }
-
-    for (let i = 0; i < accountsList.length; i++) {
-      accountsNames[i] = accountsList[i].name;
-    }
-  }
 
   const doughnutData = {
     labels: accountsNames,
@@ -83,6 +64,7 @@ const Wallet = () => {
     },
   }
 
+  const [viewData, setViewData] = useState(true);
   const handleShowData = () => {
     setViewData(!viewData);
   }
@@ -120,7 +102,7 @@ const Wallet = () => {
       {/* <div className="wallet__links">ajouter ici des étiquettes cliquables</div> */}
       <span className="wallet__title__account">Comptes</span>
       <div className="wallet__accounts">
-        {accountsList.map((elem) => {
+        {/* {accountsList.map((elem) => {
           const deposits = elem.deposit.map(item => item.value).reduce((prev, curr) => prev + curr, 0);
           const withdrawals = elem.withdrawal.map(item => item.value).reduce((prev, curr) => prev + curr, 0);
           const results = elem.result.map(item => item.value).reduce((prev, curr) => prev + curr, 0);
@@ -138,7 +120,7 @@ const Wallet = () => {
               percent={percent}
               dollar={results}
             />
-        )})}
+        )})} */}
       </div>
     </div>
   );

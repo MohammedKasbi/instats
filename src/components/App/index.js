@@ -20,18 +20,15 @@ import AddAccount from '../AddAccount';
 // import 'moment/dist/locale/fr';
 
 function App() {
-  // moment.locale('fr');
-
   const dispatch = useDispatch();
-  const accountsList = useSelector((state) => state.dashboard.accountsList);
+  const accountsList = useSelector((state) => state.accountsData.accountsList);
+  console.log(accountsList);
 
   useEffect(() => {
     dispatch({
       type: 'FETCH_ACCOUNTS_LIST',
     });
   }, [dispatch]);
-
-
 
   return (
     <div className="App">
@@ -41,7 +38,7 @@ function App() {
           <Dashboard accountsList={accountsList} />
         </Route>
         <Route path="/portefeuille">
-          <Wallet />
+          <Wallet accountsList={accountsList} />
         </Route>
         <Route path="/ajouter-transaction">
           <AddTransaction />

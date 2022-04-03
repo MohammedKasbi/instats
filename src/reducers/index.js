@@ -6,8 +6,10 @@ import addTransactionReducer from './add-transaction';
 import historyReducer from './history';
 import accountReducer from './account';
 import addAccountReducer from './add-account';
+import accountsDataReducer from './accountsData';
 
 const rootReducer = combineReducers({
+  accountsData: accountsDataReducer,
   dashboard: dashboardReducer,
   wallet: walletReducer,
   addTransaction: addTransactionReducer,
