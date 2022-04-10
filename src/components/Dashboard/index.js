@@ -1,17 +1,72 @@
-import './style.scss';
+// == Imports : npm
 import { Line  } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import fx from 'money';
-import { numberToComma } from '../../selectors/numberToComma';
-import { calculateTotalSum } from '../../selectors/calculateTotalSum';
 // import moment from 'moment/dist/moment';
 // import 'moment/dist/locale/fr';
 
+// == Imports : local
+// Styles
+import './style.scss';
+
+// Functions
+import { numberToComma } from '../../selectors/numberToComma';
+import { calculateTotalSum } from '../../selectors/calculateTotalSum';
+
+// == Component
 const Dashboard = ({ accountsList }) => {
-  const dataLoading = useSelector((state) => state.accountsData.loading);
+  const loading = useSelector((state) => state.accounts.loading);
   
-  console.log(accountsList);
-  const accountsListTotal = [];
+  // Money converter
+  fx.base = 'USD';
+  fx.rates = {
+    'EUR': 0.88,
+    'USD': 1,
+  };
+  fx.settings = {
+    from: 'USD',
+    to: 'EUR'
+  };
+  
+  // Total sum of accounts
+  const totalWalletValue = calculateTotalSum(accountsList);
+  // Convert total usd into eur
+  const totalWalletValueConverted = fx.convert(totalWalletValue);
+
+  // Data for the graph
+  const lineData = {
+    labels: ['bon', 'oui', 'non', 'maybe'],
+    datasets: [{
+      data: [1, 2, 5, 2],
+      // backgroundColor: 'linear-gradient(90deg, rgba(0,113,255,1) 0%, rgba(0,113,255,0) 100%);',
+      fill: true,
+      borderColor: 'rgb(75, 192, 192)',
+      // borderWidth: 9,
+      pointRadius: 4,
+      pointHoverRadius: 7,
+      pointBackgroundColor: 'rgb(75, 192, 192)',
+      tension: 0.15,
+    }],
+  }
+
+  // Options for the graph
+  const lineOptions = {
+    maintainAspectRatio: false,
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    },
+    plugins: {
+      legend: {
+        display: false,
+        position: 'bottom',
+      },
+    },
+  }
+
+  // const accountsListTotal = [];
 
 /*   if (accountsList) {
     function compare( a, b ) {
@@ -77,62 +132,14 @@ const Dashboard = ({ accountsList }) => {
 
 
 
-  fx.base = 'USD';
-  fx.rates = {
-    'EUR': 0.88,
-    'USD': 1,
-  };
-  fx.settings = {
-    from: 'USD',
-    to: 'EUR'
-  };
-  
-  const totalWalletValue = calculateTotalSum(accountsList);
-  const totalWalletValueConverted = fx.convert(totalWalletValue);
 
-  // let lastDaysSliced = null;
-  // let cumulatedValuesSliced = null;
 
-  // if (lastDays) {
-  //   lastDaysSliced = lastDays.slice(-7);
-  //   cumulatedValuesSliced = cumulatedValues.slice(-7);
-  // }
-
-  const lineData = {
-    // labels: lastDays ? lastDays.slice(-7) : [ 'bon', 'oui'],
-    datasets: [{
-      data: accountsListTotal ? accountsListTotal.slice(-7) : [ 1, 2],
-      // backgroundColor: 'linear-gradient(90deg, rgba(0,113,255,1) 0%, rgba(0,113,255,0) 100%);',
-      fill: true,
-      borderColor: 'rgb(75, 192, 192)',
-      // borderWidth: 9,
-      pointRadius: 4,
-      pointHoverRadius: 7,
-      pointBackgroundColor: 'rgb(75, 192, 192)',
-      tension: 0.15,
-    }],
-  }
-
-  const lineOptions = {
-    maintainAspectRatio: false,
-    responsive: true,
-    scales: {
-      y: {
-        beginAtZero: false
-      }
-    },
-    plugins: {
-      legend: {
-        display: false,
-        position: 'bottom',
-      },
-    },
-  }
-
-  if (dataLoading) {
+  // Loader
+  if (loading) {
     return <div>Chargement...</div>
   }
 
+  // == Render
   return (
     <div className="dashboard">
       <div className="dashboard__wallet">
@@ -142,7 +149,7 @@ const Dashboard = ({ accountsList }) => {
           <span className="dashboard__wallet__dollars__converted">{numberToComma(totalWalletValueConverted.toFixed(2))}€</span>
         </div>
         <div className="dashboard__wallet__percentage">
-          <span className="dashboard__wallet__percentage__tag">Evolution dernières 24h</span>
+          <span className="dashboard__wallet__percentage__tag">Evolution</span>
           <span className="dashboard__wallet__percentage__value">+{numberToComma(25.6)}%</span>
           <span className="dashboard__wallet__percentage__converted">+ ${numberToComma(120.3)}</span>
         </div>
@@ -163,4 +170,5 @@ const Dashboard = ({ accountsList }) => {
   );
 };
 
+// == Export
 export default Dashboard;

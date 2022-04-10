@@ -1,10 +1,15 @@
-// imports
+// == Imports : npm
 import { Route, Switch } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+// import moment from 'moment/dist/moment';
+// import 'moment/dist/locale/fr';
 
-// imports persos
+// == Imports : local
+// Styles
 import './style.scss';
 
-// imports composants
+// Components
 import Menu from '../Menu';
 import Dashboard from '../Dashboard';
 import Wallet from '../Wallet';
@@ -13,15 +18,12 @@ import Statistics from '../Statistics';
 import History from '../History';
 import Profile from '../Profile';
 import DetailAccount from '../DetailAccount';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import AddAccount from '../AddAccount';
-// import moment from 'moment/dist/moment';
-// import 'moment/dist/locale/fr';
 
-function App() {
+// == Component
+const App = () => {
   const dispatch = useDispatch();
-  const accountsList = useSelector((state) => state.accountsData.accountsList);
+  const accountsList = useSelector((state) => state.accounts.accountsList);
   console.log(accountsList);
 
   useEffect(() => {
@@ -30,6 +32,7 @@ function App() {
     });
   }, [dispatch]);
 
+  // == Render
   return (
     <div className="App">
       <Menu />
@@ -63,4 +66,5 @@ function App() {
   );
 }
 
+// == Export
 export default App;

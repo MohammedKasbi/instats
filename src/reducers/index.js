@@ -1,21 +1,21 @@
+// == Imports : npm
 import { combineReducers } from 'redux';
 
-import dashboardReducer from './dashboard';
-import walletReducer from './wallet';
-import addTransactionReducer from './add-transaction';
-import historyReducer from './history';
+// == Imports : local
 import accountReducer from './account';
+import accountsReducer from './accounts';
+import walletReducer from './wallet';
 import addAccountReducer from './add-account';
-import accountsDataReducer from './accountsData';
+import addTransactionReducer from './add-transaction';
 
+// == Reducer
 const rootReducer = combineReducers({
-  accountsData: accountsDataReducer,
-  dashboard: dashboardReducer,
+  accounts: accountsReducer,
   wallet: walletReducer,
   addTransaction: addTransactionReducer,
-  history: historyReducer,
   account: accountReducer,
   addAccount: addAccountReducer,
 });
 
+// == Export
 export default rootReducer;
