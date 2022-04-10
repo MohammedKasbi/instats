@@ -2,6 +2,7 @@
 import { Line  } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import fx from 'money';
+import PropTypes from 'prop-types';
 // import moment from 'moment/dist/moment';
 // import 'moment/dist/locale/fr';
 
@@ -12,6 +13,10 @@ import './style.scss';
 // Functions
 import { numberToComma } from '../../selectors/numberToComma';
 import { calculateTotalSum } from '../../selectors/calculateTotalSum';
+import { calculateProfits } from '../../selectors/calculateProfits';
+import { calculateDeposits } from '../../selectors/calculateDeposits';
+import { getDates } from '../../selectors/getDates';
+import { getDaysArray } from '../../selectors/getDaysArray';
 
 // == Component
 const Dashboard = ({ accountsList }) => {
@@ -33,9 +38,32 @@ const Dashboard = ({ accountsList }) => {
   // Convert total usd into eur
   const totalWalletValueConverted = fx.convert(totalWalletValue);
 
+  // Calculation of total percentage of all accounts
+  // The variable that will contain the total percentage of all accounts
+  let totalPercent = 0;
+  // The variable that will contain the sum of benefit of all account
+  let totalProfit = 0;
+  // The variable that will contain the sum of deposits of all account
+  let totalDeposits = 0;
+
+  // The function that calculate all profits from all accounts
+  totalProfit = calculateProfits(accountsList);
+  // The function that calculate all deposits from all accounts
+  totalDeposits = calculateDeposits(accountsList);
+
+  // Calculation of the percentage using the variables 'totalDeposits' and 'totalProfit'
+  totalPercent = totalProfit / totalDeposits;
+
+  const dates = getDates(accountsList);
+  dates.sort();
+  console.log(dates);
+
+  const allDates = getDaysArray(dates[0], dates.at(-1));
+  console.log(allDates);
+
   // Data for the graph
   const lineData = {
-    labels: ['bon', 'oui', 'non', 'maybe'],
+    labels: allDates,
     datasets: [{
       data: [1, 2, 5, 2],
       // backgroundColor: 'linear-gradient(90deg, rgba(0,113,255,1) 0%, rgba(0,113,255,0) 100%);',
@@ -66,77 +94,11 @@ const Dashboard = ({ accountsList }) => {
     },
   }
 
-  // const accountsListTotal = [];
-
-/*   if (accountsList) {
-    function compare( a, b ) {
-      if ( a.transaction_at < b.transaction_at ){
-        return -1;
-      }
-      if ( a.transaction_at > b.transaction_at ){
-        return 1;
-      }
-      return 0;
-    }
-
-    function arrayUnique2(array) {
-        for(let i = 0; i < array.length; ++i) {
-          for(let j = i + 1; j < array.length; ++j) {
-            if(array[i].transaction_at === array[j].transaction_at) {
-              console.log(array[i], i);
-              console.log(array[j], j);
-              array[i].dayResult += array[j].dayResult;
-              // array[i].deposit += array[j].deposit;
-              // array[i].withdrawal += array[j].withdrawal;
-              array.splice(j--, 1);
-            }
-          }
-        }
-        return array;
-    }
-    
-    accountsList.forEach(elem => {
-      elem.results.forEach(el => {
-        // el.transaction_at = moment(el.transaction_at).format("LL")
-        el.dayTotal = el.dayResult + el.deposit - el.withdrawal
-      })
-    })
-
-    accountsList.forEach(el => {
-      // console.log(el);
-      el.results.forEach(elem => {
-        // console.log(elem);
-        accountsListTotal.push(elem);
-      })
-      // accountsListTotal.push({});
-      // el.results.reduce(function(a,b,i) {
-      //   // for (let i = 0; i < el.results.length; i++) {
-      //   // }
-      //   // console.log(a);
-      //   // console.log(b);
-      //   // console.log('day',b.dayTotal);
-      //   // console.log(i);
-      //   return accountsListTotal[i] = a+b.dayTotal;
-      // }, 0);
-    });
-
-    accountsList.forEach(elem => {
-      elem.results.sort(compare);
-    });
-
-    arrayUnique2(accountsListTotal);
-
-    console.log(accountsList);
-    // console.log(accountsListTotal.sort(compare));
-  } */
-
-
-
-
-
   // Loader
   if (loading) {
-    return <div>Chargement...</div>
+    return <div>
+      Chargement...
+    </div>
   }
 
   // == Render
@@ -150,8 +112,8 @@ const Dashboard = ({ accountsList }) => {
         </div>
         <div className="dashboard__wallet__percentage">
           <span className="dashboard__wallet__percentage__tag">Evolution</span>
-          <span className="dashboard__wallet__percentage__value">+{numberToComma(25.6)}%</span>
-          <span className="dashboard__wallet__percentage__converted">+ ${numberToComma(120.3)}</span>
+          <span className="dashboard__wallet__percentage__value">+{Math.round(totalPercent * 10000) / 100}%</span>
+          <span className="dashboard__wallet__percentage__converted">+ ${numberToComma(totalProfit)}</span>
         </div>
       </div>
       <div className="dashboard__transactions">
@@ -169,6 +131,11 @@ const Dashboard = ({ accountsList }) => {
     </div>
   );
 };
+
+// == Proptypes
+Dashboard.propTypes ={
+  accountsList: PropTypes.array.isRequired,
+}
 
 // == Export
 export default Dashboard;

@@ -24,6 +24,8 @@ import AddAccount from '../AddAccount';
 const App = () => {
   const dispatch = useDispatch();
   const accountsList = useSelector((state) => state.accounts.accountsList);
+  const loading = useSelector((state) => state.accounts.loading);
+
   console.log(accountsList);
 
   useEffect(() => {
@@ -31,6 +33,12 @@ const App = () => {
       type: 'FETCH_ACCOUNTS_LIST',
     });
   }, [dispatch]);
+
+  if (loading) {
+    return <div>
+      Chargement...
+    </div>
+  }
 
   // == Render
   return (

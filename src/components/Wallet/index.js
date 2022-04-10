@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Doughnut } from 'react-chartjs-2';
+import PropTypes from 'prop-types';
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import fx from 'money';
 
@@ -49,12 +50,12 @@ const Wallet = ({ accountsList }) => {
     datasets: [{
       data: accountsSum,
       backgroundColor: [
-        'rgba(252, 145, 65, 1)',
-        'rgba(61, 255, 249, 1)',
-        'rgba(240, 255, 109, 1)',
-        'rgba(186, 66, 255, 1)',
-        'rgba(254, 67, 144, 1)',
-        'rgba(66, 147, 254, 1)',
+        'rgb(252, 145, 65)',
+        'rgb(61, 255, 249)',
+        'rgb(240, 255, 109)',
+        'rgb(186, 66, 255)',
+        'rgb(254, 67, 144)',
+        'rgb(66, 147, 254)',
       ],
       borderWidth: 0,
       hoverOffset: 4,
@@ -143,7 +144,7 @@ const Wallet = ({ accountsList }) => {
                 name={elem.name}
                 value={tempSum}
                 // Calculation of the percentage using the variables 'tempDeposits' and 'tempProfit'
-                percent={((tempDeposits + tempProfit) - tempDeposits) / tempDeposits}
+                percent={tempProfit / tempDeposits}
                 dollar={tempProfit}
               />)
 
@@ -152,6 +153,11 @@ const Wallet = ({ accountsList }) => {
     </div>
   );
 };
+
+// == Proptypes
+Wallet.propTypes ={
+  accountsList: PropTypes.array.isRequired,
+}
 
 // == Export
 export default Wallet;
