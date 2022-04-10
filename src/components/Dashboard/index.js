@@ -54,12 +54,12 @@ const Dashboard = ({ accountsList }) => {
   // Calculation of the percentage using the variables 'totalDeposits' and 'totalProfit'
   totalPercent = totalProfit / totalDeposits;
 
+  // Array that contain all dates of all transactions on all of the accounts
   const dates = getDates(accountsList);
+  // Sorting dates
   dates.sort();
-  console.log(dates);
-
+  // Array that contain all of dates from the first transaction to the last
   const allDates = getDaysArray(dates[0], dates.at(-1));
-  console.log(allDates);
 
   // Data for the graph
   const lineData = {
