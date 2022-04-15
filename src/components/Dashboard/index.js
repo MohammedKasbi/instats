@@ -3,8 +3,6 @@ import { Line  } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import fx from 'money';
 import PropTypes from 'prop-types';
-// import moment from 'moment/dist/moment';
-// import 'moment/dist/locale/fr';
 
 // == Imports : local
 // Styles
@@ -17,6 +15,7 @@ import { calculateProfits } from '../../selectors/calculateProfits';
 import { calculateDeposits } from '../../selectors/calculateDeposits';
 import { getDates } from '../../selectors/getDates';
 import { getDaysArray } from '../../selectors/getDaysArray';
+import { dateCompare } from '../../selectors/dateCompare';
 
 // == Component
 const Dashboard = ({ accountsList }) => {
@@ -60,6 +59,10 @@ const Dashboard = ({ accountsList }) => {
   dates.sort();
   // Array that contain all of dates from the first transaction to the last
   const allDates = getDaysArray(dates[0], dates.at(-1));
+
+  console.log(allDates);
+
+  dateCompare(allDates, accountsList);
 
   // Data for the graph
   const lineData = {
@@ -111,7 +114,7 @@ const Dashboard = ({ accountsList }) => {
           <span className="dashboard__wallet__dollars__converted">{numberToComma(totalWalletValueConverted.toFixed(2))}€</span>
         </div>
         <div className="dashboard__wallet__percentage">
-          <span className="dashboard__wallet__percentage__tag">Evolution</span>
+          <span className="dashboard__wallet__percentage__tag">Evolution du portefeuille</span>
           <span className="dashboard__wallet__percentage__value">+{Math.round(totalPercent * 10000) / 100}%</span>
           <span className="dashboard__wallet__percentage__converted">+ ${numberToComma(totalProfit)}</span>
         </div>
