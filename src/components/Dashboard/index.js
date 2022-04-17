@@ -63,13 +63,13 @@ const Dashboard = ({ accountsList }) => {
   console.log(allDates);
 
   const graphValues = dateCompare(allDates, accountsList);
-  console.log(graphValues, 'Dashboard');
+  // console.log(graphValues, 'Dashboard');
 
   // Data for the graph
   const lineData = {
     labels: allDates,
     datasets: [{
-      data: [1, 2, 5, 2],
+      data: graphValues,
       // backgroundColor: 'linear-gradient(90deg, rgba(0,113,255,1) 0%, rgba(0,113,255,0) 100%);',
       fill: true,
       borderColor: 'rgb(75, 192, 192)',

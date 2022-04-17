@@ -52,8 +52,7 @@ export const dateCompare = (dateArray, accountsList) => {
       }
     })
 
-    // console.log(dataArray);
-    // console.log(finalArray);
+    finalArray.reduce((prev, curr,i) =>  finalArray[i] = prev + curr , 0)
     
     return finalArray;
   }
