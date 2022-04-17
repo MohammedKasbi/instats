@@ -62,7 +62,8 @@ const Dashboard = ({ accountsList }) => {
 
   console.log(allDates);
 
-  dateCompare(allDates, accountsList);
+  const graphValues = dateCompare(allDates, accountsList);
+  console.log(graphValues, 'Dashboard');
 
   // Data for the graph
   const lineData = {
