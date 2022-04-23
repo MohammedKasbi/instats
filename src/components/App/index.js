@@ -52,7 +52,7 @@ const App = () => {
           <Wallet accountsList={accountsList} />
         </Route>
         <Route path="/ajouter-transaction">
-          <AddTransaction />
+          <AddTransaction accountsList={accountsList} />
         </Route>
         <Route path="/statistiques">
           <Statistics />

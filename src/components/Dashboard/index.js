@@ -16,6 +16,7 @@ import { calculateDeposits } from '../../selectors/calculateDeposits';
 import { getDates } from '../../selectors/getDates';
 import { getDaysArray } from '../../selectors/getDaysArray';
 import { dateCompare } from '../../selectors/dateCompare';
+import { useState } from 'react';
 
 // == Component
 const Dashboard = ({ accountsList }) => {
@@ -60,21 +61,23 @@ const Dashboard = ({ accountsList }) => {
   // Array that contain all of dates from the first transaction to the last
   const allDates = getDaysArray(dates[0], dates.at(-1));
 
-  console.log(allDates);
-
   const graphValues = dateCompare(allDates, accountsList);
-  // console.log(graphValues, 'Dashboard');
+
+  const [duration, setDuration] = useState(0);
+  const handleChangeDuration = (evt) => {
+    setDuration(evt.target.value);
+  }
 
   // Data for the graph
   const lineData = {
-    labels: allDates,
+    labels: allDates.slice(-duration),
     datasets: [{
-      data: graphValues,
+      data: graphValues.slice(-duration),
       // backgroundColor: 'linear-gradient(90deg, rgba(0,113,255,1) 0%, rgba(0,113,255,0) 100%);',
       fill: true,
       borderColor: 'rgb(75, 192, 192)',
       // borderWidth: 9,
-      pointRadius: 4,
+      pointRadius: 2,
       pointHoverRadius: 7,
       pointBackgroundColor: 'rgb(75, 192, 192)',
       tension: 0.15,
@@ -87,7 +90,7 @@ const Dashboard = ({ accountsList }) => {
     responsive: true,
     scales: {
       y: {
-        beginAtZero: true
+        beginAtZero: false
       }
     },
     plugins: {
@@ -131,6 +134,12 @@ const Dashboard = ({ accountsList }) => {
       </div>
       <div className="dashboard__graphic">
         <Line data={lineData} options={lineOptions} />
+      </div>
+      <div>
+        <button value="7" onClick={handleChangeDuration}>Semaine dernière</button>
+        <button value="30" onClick={handleChangeDuration}>30 derniers jours</button>
+        <button value="90" onClick={handleChangeDuration}>3 derniers mois</button>
+        <button value="reset" onClick={handleChangeDuration}>Depuis le début</button>
       </div>
     </div>
   );

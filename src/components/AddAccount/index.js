@@ -1,6 +1,11 @@
+// == Imports : npm
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
+// == Imports : local
+// Styles
+
+// == Component
 const AddAccount = () => {
   const dispatch = useDispatch();
   const newAccountValue = useSelector((state) => state.addAccount.newAccountValue);
@@ -29,8 +34,10 @@ const AddAccount = () => {
   );
 }
 
+// == Proptypes
 AddAccount.propTypes = {
 
 };
 
+// == Export
 export default AddAccount;
