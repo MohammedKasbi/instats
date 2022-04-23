@@ -1,18 +1,30 @@
 import './style.scss';
 import { Line  } from 'react-chartjs-2';
 import Account from '../Account';
-import { useSelector } from 'react-redux';
+import { getDates } from '../../selectors/getDates';
+import { getDaysArray } from '../../selectors/getDaysArray';
+import { dateCompare } from '../../selectors/dateCompare';
+import { useState } from 'react';
 
-const History = () => {
-  const dates = ['31/10', '01/11', '02/11', '03/11', '04/11', '05/11', '06/11', '07/11', '08/11', '09/11',];
-  const dailyGains = [3, 20, 5, 12, 15, 16, 20, 19, 22, 27];
+const History = ({ accountsList }) => {
+  // Array that contain all dates of all transactions on all of the accounts
+  const dates = getDates(accountsList);
+  // Sorting dates
+  dates.sort();
+  // Array that contain all of dates from the first transaction to the last
+  const allDates = getDaysArray(dates[0], dates.at(-1));
 
-  const accountsData = useSelector((state) => state.history.accountsData);
+  const graphValues = dateCompare(allDates, accountsList);
+
+  const [duration, setDuration] = useState(7);
+  const handleChangeDuration = (evt) => {
+    setDuration(evt.target.value);
+  }
 
   const lineData = {
-    labels: dates,
+    labels: allDates.slice(-duration),
     datasets: [{
-      data: dailyGains,
+      data: graphValues.slice(-duration),
       // backgroundColor: 'linear-gradient(90deg, rgba(0,113,255,1) 0%, rgba(0,113,255,0) 100%);',
       fill: true,
       borderColor: 'rgb(75, 192, 192)',
@@ -25,6 +37,12 @@ const History = () => {
   }
 
   const lineOptions = {
+    animations: {
+      tension: {
+        duration: 1000,
+        easing: 'easeInOutElastic',
+      }
+    },
     maintainAspectRatio: false,
     responsive: true,
     scales: {
@@ -40,49 +58,54 @@ const History = () => {
     },
   }
 
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-  }
-
-  const handleClick = (evt) => {
-    console.log(evt.target.value);
-  }
-
-  const handleChange = (evt) => {
-    console.log(evt.target.value);
-  }
-
   return (
     <div className="history">
       <div className="history__data-select">
-        <form onSubmit={handleSubmit}>
-          <button value='day' onClick={handleClick}>Jour</button>
-          <button value='week' onClick={handleClick}>S</button>
-          <button value='month' onClick={handleClick}>M</button>
-          <button value='year' onClick={handleClick}>A</button>
-          <select name="select-account" id="select-account" onChange={handleChange}>
+        <button value="7" onClick={handleChangeDuration}>S</button>
+        <button value="30" onClick={handleChangeDuration}>M</button>
+        <button value="90" onClick={handleChangeDuration}>3M</button>
+        <button value="" onClick={handleChangeDuration}>Tout</button>
+          {/* <select name="select-account" id="select-account" onChange={handleChange}>
             <option value="all-accounts">Tous les comptes</option>
-            {accountsData.map((elem) => (
+            {accountsList.map((elem) => (
               <option key={elem.id} value={elem.id}>{elem.name}</option>
             ))}
-          </select>
-        </form>
+          </select> */}
       </div>
       <div className='history__graph'>
         <Line data={lineData} options={lineOptions} />
       </div>
       <div className="history__account-list">
-        {accountsData.map((elem) => (
-          <Account
-            key={elem.id}
-            id={elem.id}
-            img={elem.image}
-            name={elem.name}
-            value={elem.capital}
-            percent={elem.percent}
-            dollar={elem.percentConverted}
-          />
-        ))}
+        {accountsList.map((elem) => {
+            // The variable that will contain the sum of each account
+            let tempSum = 0;
+            // The variable that will contain the sum of benefit of each account
+            let tempProfit = 0;
+            // The variable that will contain the sum of deposits of each account
+            // and will be used to calculate the percent of the account
+            let tempDeposits = 0;
+
+            // For each element in 'results' arrays
+            elem.results.forEach(element => {
+              // Increment the sum of daily earnings, deposits, minus withdrawals in 'tempsSum' variable
+              tempSum += (element.dayResult + element.deposit - element.withdrawal);
+              // Increment the sum of daily earnings in 'tempProfit' variable
+              tempProfit += element.dayResult;
+              // Increment the sum of deposits in 'tempDeposits' variable
+              tempDeposits += element.deposit;
+            })
+
+            return (
+              <Account
+                key={elem.id}
+                id={elem.id}
+                name={elem.name}
+                value={tempSum}
+                // Calculation of the percentage using the variables 'tempDeposits' and 'tempProfit'
+                percent={tempProfit / tempDeposits}
+                dollar={tempProfit}
+              />)
+        })}
       </div>
     </div>
   );

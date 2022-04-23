@@ -1,11 +1,8 @@
 .history {
   grid-area: content;
-  display: grid;
-  grid-template-areas: 
-  "data-select"
-  "graph"
-  "account-list";
-  grid-template-rows: 5em 25em 1fr;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 
   &__data-select {
     grid-area: data-select;
@@ -16,15 +13,15 @@
   }
   
   &__graph {
-    grid-area: graph;
     margin: 1.5em;
+    height: 20em;
   }
 
   &__account-list {
-    grid-area: account-list;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: auto;
   }
 }
