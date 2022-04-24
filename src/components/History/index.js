@@ -1,10 +1,11 @@
 import './style.scss';
 import { Line  } from 'react-chartjs-2';
-import Account from '../Account';
 import { getDates } from '../../selectors/getDates';
 import { getDaysArray } from '../../selectors/getDaysArray';
 import { dateCompare } from '../../selectors/dateCompare';
+import { dateCompare2 } from '../../selectors/dateCompare2';
 import { useState } from 'react';
+import { numberToComma } from '../../selectors/numberToComma';
 
 const History = ({ accountsList }) => {
   // Array that contain all dates of all transactions on all of the accounts
@@ -15,6 +16,8 @@ const History = ({ accountsList }) => {
   const allDates = getDaysArray(dates[0], dates.at(-1));
 
   const graphValues = dateCompare(allDates, accountsList);
+  const valuesList = dateCompare2(allDates, accountsList);
+  console.log(valuesList);
 
   const [duration, setDuration] = useState(7);
   const handleChangeDuration = (evt) => {
@@ -76,36 +79,44 @@ const History = ({ accountsList }) => {
         <Line data={lineData} options={lineOptions} />
       </div>
       <div className="history__account-list">
-        {accountsList.map((elem) => {
-            // The variable that will contain the sum of each account
-            let tempSum = 0;
-            // The variable that will contain the sum of benefit of each account
-            let tempProfit = 0;
-            // The variable that will contain the sum of deposits of each account
-            // and will be used to calculate the percent of the account
-            let tempDeposits = 0;
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Pourcentage</th>
+            <th>Gain</th>
+            <th>Capital</th>
+            <th>Dépôts</th>
+            <th>Retraits</th>
+          </tr>
+        </thead>
+        <tbody>
+        {valuesList.map((element, index, array) => {
+          let percent = 0;
+          if(array[index-1]) {
+            percent = element.dayResult / array[index-1].capital
+          } else {
+            percent = element.dayResult / element.deposit
+          }
 
-            // For each element in 'results' arrays
-            elem.results.forEach(element => {
-              // Increment the sum of daily earnings, deposits, minus withdrawals in 'tempsSum' variable
-              tempSum += (element.dayResult + element.deposit - element.withdrawal);
-              // Increment the sum of daily earnings in 'tempProfit' variable
-              tempProfit += element.dayResult;
-              // Increment the sum of deposits in 'tempDeposits' variable
-              tempDeposits += element.deposit;
-            })
-
-            return (
-              <Account
-                key={elem.id}
-                id={elem.id}
-                name={elem.name}
-                value={tempSum}
-                // Calculation of the percentage using the variables 'tempDeposits' and 'tempProfit'
-                percent={tempProfit / tempDeposits}
-                dollar={tempProfit}
-              />)
-        })}
+          let classNameResult = '';
+          if(element.dayResult > 0) {
+            classNameResult = '--positive';
+          } else if (element.dayResult < 0) {
+            classNameResult = '--negative';
+          }
+          return (
+            <tr key={element.id} className={`history__account-list__result${classNameResult}`}>
+              <td>{element.date}</td>
+              <td>{numberToComma(Math.round(percent * 10000) / 100)} %</td>
+              <td>${numberToComma(element.dayResult)}</td>
+              <td>${numberToComma(element.capital)}</td>
+              <td>${numberToComma(element.deposit)}</td>
+              <td>${numberToComma(element.withdrawal)}</td>
+            </tr>
+        )})}
+        </tbody>
+      </table>
       </div>
     </div>
   );

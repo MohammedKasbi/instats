@@ -124,6 +124,7 @@ const Dashboard = ({ accountsList }) => {
         </div>
       </div>
       <div className="dashboard__transactions">
+      {/* // TODO */}
         <h2 className="dashboard__transactions__title">Derniers mouvements</h2>
         <span>Transaction 1</span>
         <span>Transaction 2</span>

@@ -31,7 +31,7 @@ export const dateCompare = (dateArray, accountsList) => {
     const arrayUnique = (array) => {
       for(let i = 0; i < array.length; ++i) {
         for(let j = i + 1; j < array.length; ++j) {
-          if(array[i].transaction_at === array[j].transaction_at) {
+          if(array[i].date === array[j].date) {
             array[i].dayTotal += array[j].dayTotal;
             array.splice(j--, 1)
           }
