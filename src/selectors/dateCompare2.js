@@ -46,11 +46,12 @@ export const dateCompare2 = (dateArray, accountsList) => {
 
     arrayUnique(dataArray);
     dataArray.sort(compare);
+    console.log(dataArray);
 
     let valueCumulative = 0;
     dateArray.forEach((newDate, ind) => {
-      if (dataArray.find(element => element.date === newDate) !== undefined) {
-        const index = dataArray.findIndex(element => element.date === newDate);
+      if (dataArray.find(element => element.date === moment(newDate).format('L'))) {
+        const index = dataArray.findIndex(element => element.date === moment(newDate).format('L'));
         valueCumulative += dataArray[index].dayResult + dataArray[index].deposit - dataArray[index].withdrawal;
         finalArray.push({
           id: ind,

@@ -6,6 +6,10 @@ import { dateCompare } from '../../selectors/dateCompare';
 import { dateCompare2 } from '../../selectors/dateCompare2';
 import { useState } from 'react';
 import { numberToComma } from '../../selectors/numberToComma';
+import moment from "moment";
+import 'moment/locale/fr';
+
+moment.locale('fr');
 
 const History = ({ accountsList }) => {
   // Array that contain all dates of all transactions on all of the accounts
@@ -13,7 +17,7 @@ const History = ({ accountsList }) => {
   // Sorting dates
   dates.sort();
   // Array that contain all of dates from the first transaction to the last
-  const allDates = getDaysArray(dates[0], dates.at(-1));
+  const allDates = getDaysArray(dates[0]);
 
   const graphValues = dateCompare(allDates, accountsList);
   const valuesList = dateCompare2(allDates, accountsList);
@@ -107,14 +111,15 @@ const History = ({ accountsList }) => {
           }
           return (
             <tr key={element.id} className={`history__account-list__result${classNameResult}`}>
-              <td>{element.date}</td>
+              <td>{moment(element.date).format('ll')}</td>
               <td>{numberToComma(Math.round(percent * 10000) / 100)} %</td>
               <td>${numberToComma(element.dayResult)}</td>
               <td>${numberToComma(element.capital)}</td>
               <td>${numberToComma(element.deposit)}</td>
               <td>${numberToComma(element.withdrawal)}</td>
             </tr>
-        )})}
+          )
+        })}
         </tbody>
       </table>
       </div>
