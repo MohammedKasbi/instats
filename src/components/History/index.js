@@ -18,18 +18,18 @@ const History = ({ accountsList }) => {
   dates.sort();
   // Array that contain all of dates from the first transaction to the last
   const allDates = getDaysArray(dates[0]);
+  const allDatesGraph = getDaysArray(dates[0], true);
 
   const graphValues = dateCompare(allDates, accountsList);
   const valuesList = dateCompare2(allDates, accountsList);
-  console.log(valuesList);
 
-  const [duration, setDuration] = useState(7);
+  const [duration, setDuration] = useState(30);
   const handleChangeDuration = (evt) => {
     setDuration(evt.target.value);
   }
 
   const lineData = {
-    labels: allDates.slice(-duration),
+    labels: allDatesGraph.slice(-duration),
     datasets: [{
       data: graphValues.slice(-duration),
       // backgroundColor: 'linear-gradient(90deg, rgba(0,113,255,1) 0%, rgba(0,113,255,0) 100%);',

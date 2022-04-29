@@ -42,10 +42,10 @@ export const dateCompare = (dateArray, accountsList) => {
 
     arrayUnique(dataArray);
     dataArray.sort(compare);
-
-    dateArray.forEach(date => {
-      if (dataArray.find(element => element.date === date) !== undefined) {
-        const index = dataArray.findIndex(element => element.date === date)
+    
+    dateArray.forEach(newDate => {
+      if (dataArray.find(element => element.date === moment(newDate).format('L'))) {
+        const index = dataArray.findIndex(element => element.date === moment(newDate).format('L'))
         finalArray.push(dataArray[index].dayTotal)
       } else {
         finalArray.push(0)

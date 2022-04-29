@@ -59,11 +59,12 @@ const Dashboard = ({ accountsList }) => {
   // Sorting dates
   dates.sort();
   // Array that contain all of dates from the first transaction to the last
-  const allDates = getDaysArray(dates[0], dates.at(-1));
+  const allDates = getDaysArray(dates[0], true);
+  const allDatesForCompare = getDaysArray(dates[0]);
 
-  const graphValues = dateCompare(allDates, accountsList);
+  const graphValues = dateCompare(allDatesForCompare, accountsList);
 
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState(7);
   const handleChangeDuration = (evt) => {
     setDuration(evt.target.value);
   }
