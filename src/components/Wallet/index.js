@@ -75,9 +75,13 @@ const Wallet = ({ accountsList }) => {
     },
   }
 
+  const viewHide = localStorage.getItem('viewData');
+  console.log(viewHide);
+
   // State for the closing/opening eye to see or hide the wallet value
-  const [viewData, setViewData] = useState(true);
+  const [viewData, setViewData] = useState(viewHide);
   const handleShowData = () => {
+    localStorage.setItem('viewData', !viewData);
     setViewData(!viewData);
   }
 
@@ -95,18 +99,18 @@ const Wallet = ({ accountsList }) => {
         <Doughnut data={doughnutData} options={doughnutOptions} />
         <div className="wallet__doughnut__data">
           <span className="wallet__doughnut__data__tag">Capital Total
-            {viewData
+            {viewHide === 'true'
             ? <AiOutlineEye className="wallet__doughnut__data__tag__eye" onClick={handleShowData} />
             : <AiOutlineEyeInvisible className="wallet__doughnut__data__tag__eye" onClick={handleShowData} />}
           </span>
           <span className="wallet__doughnut__data__value">
-            {viewData
+            {viewHide === 'true'
             ? `$${numberToComma(totalWalletValue.toFixed(2))}`
             : `$${numberToComma(totalWalletValue.toFixed(2)).replaceAll(/[0123456789]/g, '*')}`
             }
           </span>
           <span className="wallet__doughnut__data__converted">
-            {viewData
+            {viewHide === 'true'
             ? `${numberToComma(totalWalletValueConverted.toFixed(2))}€`
             : `${numberToComma(totalWalletValueConverted.toFixed(2)).replaceAll(/[0123456789]/g, '*')}€`
             }

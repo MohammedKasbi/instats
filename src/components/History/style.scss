@@ -13,29 +13,62 @@
   
   &__graph {
     margin: 1.5em;
-    height: 200em;
+    height: 500px;
   }
 
   &__account-list {
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     overflow: auto;
+    text-align: center;
 
-    &__result {
-      &--positive {
-        background-color: #00904C;
-      }
+    &__head {
+      display: grid;
+      grid-template-columns: repeat(6, 10em);
 
-      &--negative {
-        background-color: #900000;
+      & div {
+        background-color: #0071ff;
+        padding: 1em;
       }
     }
 
-    table {
-      border-collapse: collapse;
-      border: 3px solid white;
-      text-align: center;
+    &__body {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+
+    &__result {
+      display: grid;
+      grid-template-columns: repeat(6, 10em);
+      margin: 0.2em;
+
+      & div {
+        padding: 0.5em;
+      }
+
+      &--positive {
+        display: grid;
+        grid-template-columns: repeat(6, 10em);
+        background-color: #00904C;
+        margin: 0.2em;
+
+        & div {
+          padding: 0.5em;
+        }
+      }
+
+      &--negative {
+        display: grid;
+        grid-template-columns: repeat(6, 10em);
+        background-color: #900000;
+        margin: 0.2em;
+
+        & div {
+          padding: 0.5em;
+        }
+      }
     }
 
     thead tr {
@@ -47,9 +80,6 @@
       padding: 1em;
       width: 10em;
       text-align: center;
-    }
-
-    tbody tr {
     }
 
     td {

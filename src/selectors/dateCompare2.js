@@ -46,7 +46,6 @@ export const dateCompare2 = (dateArray, accountsList) => {
 
     arrayUnique(dataArray);
     dataArray.sort(compare);
-    console.log(dataArray);
 
     let valueCumulative = 0;
     dateArray.forEach((newDate, ind) => {

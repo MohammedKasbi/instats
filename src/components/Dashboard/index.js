@@ -3,6 +3,7 @@ import { Line  } from 'react-chartjs-2';
 import { useSelector } from 'react-redux';
 import fx from 'money';
 import PropTypes from 'prop-types';
+import moment from "moment";
 
 // == Imports : local
 // Styles
@@ -17,6 +18,11 @@ import { getDates } from '../../selectors/getDates';
 import { getDaysArray } from '../../selectors/getDaysArray';
 import { dateCompare } from '../../selectors/dateCompare';
 import { useState } from 'react';
+import { dateCompare2 } from '../../selectors/dateCompare2';
+import 'moment/locale/fr';
+
+// Set moment local to french
+moment.locale('fr');
 
 // == Component
 const Dashboard = ({ accountsList }) => {
@@ -59,10 +65,12 @@ const Dashboard = ({ accountsList }) => {
   // Sorting dates
   dates.sort();
   // Array that contain all of dates from the first transaction to the last
-  const allDates = getDaysArray(dates[0], true);
+  const allDates = getDaysArray(dates[0]);
+  const allDatesGraph = getDaysArray(dates[0], true);
   const allDatesForCompare = getDaysArray(dates[0]);
 
   const graphValues = dateCompare(allDatesForCompare, accountsList);
+  const valuesList = dateCompare2(allDates, accountsList);
 
   const [duration, setDuration] = useState(7);
   const handleChangeDuration = (evt) => {
@@ -71,7 +79,7 @@ const Dashboard = ({ accountsList }) => {
 
   // Data for the graph
   const lineData = {
-    labels: allDates.slice(-duration),
+    labels: allDatesGraph.slice(-duration),
     datasets: [{
       data: graphValues.slice(-duration),
       // backgroundColor: 'linear-gradient(90deg, rgba(0,113,255,1) 0%, rgba(0,113,255,0) 100%);',
@@ -125,14 +133,13 @@ const Dashboard = ({ accountsList }) => {
         </div>
       </div>
       <div className="dashboard__transactions">
-      {/* // TODO */}
         <h2 className="dashboard__transactions__title">Derniers mouvements</h2>
-        <span>Transaction 1</span>
-        <span>Transaction 2</span>
-        <span>Transaction 3</span>
-        <span>Transaction 4</span>
-        <span>Transaction 5</span>
-        <span>Transaction 6</span>
+        {valuesList.slice(-7).map((element) => (
+          <div key={element.id} className={'dashboard__transactions__results'}>
+            <div>{moment(element.date).format('dd D MMM')}</div>
+            <div>${numberToComma(element.dayResult)}</div>
+          </div>
+        ))}
       </div>
       <div className="dashboard__graphic">
         <Line data={lineData} options={lineOptions} />

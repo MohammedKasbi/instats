@@ -83,18 +83,15 @@ const History = ({ accountsList }) => {
         <Line data={lineData} options={lineOptions} />
       </div>
       <div className="history__account-list">
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Pourcentage</th>
-            <th>Gain</th>
-            <th>Capital</th>
-            <th>Dépôts</th>
-            <th>Retraits</th>
-          </tr>
-        </thead>
-        <tbody>
+        <div className="history__account-list__head">
+            <div>Date</div>
+            <div>Pourcentage</div>
+            <div>Gain</div>
+            <div>Capital</div>
+            <div>Dépôts</div>
+            <div>Retraits</div>
+        </div>
+        <div className="history__account-list__body">
         {valuesList.map((element, index, array) => {
           let percent = 0;
           if(array[index-1]) {
@@ -110,18 +107,17 @@ const History = ({ accountsList }) => {
             classNameResult = '--negative';
           }
           return (
-            <tr key={element.id} className={`history__account-list__result${classNameResult}`}>
-              <td>{moment(element.date).format('ll')}</td>
-              <td>{numberToComma(Math.round(percent * 10000) / 100)} %</td>
-              <td>${numberToComma(element.dayResult)}</td>
-              <td>${numberToComma(element.capital)}</td>
-              <td>${numberToComma(element.deposit)}</td>
-              <td>${numberToComma(element.withdrawal)}</td>
-            </tr>
+            <div key={element.id} className={`history__account-list__result${classNameResult}`}>
+              <div>{moment(element.date).format('ddd D MMM Y')}</div>
+              <div>{numberToComma(Math.round(percent * 10000) / 100)} %</div>
+              <div>${numberToComma(element.dayResult)}</div>
+              <div>${numberToComma(element.capital)}</div>
+              <div>${numberToComma(element.deposit)}</div>
+              <div>${numberToComma(element.withdrawal)}</div>
+            </div>
           )
         })}
-        </tbody>
-      </table>
+        </div>
       </div>
     </div>
   );

@@ -70,7 +70,9 @@
     justify-content: center;
     align-items: center;
 
-    & span {
+    &__results {
+      display: flex;
+      justify-content: space-between;
       padding: 0.25em;
       margin: 0.15em;
       width: 100%;
