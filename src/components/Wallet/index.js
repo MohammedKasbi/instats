@@ -74,11 +74,9 @@ const Wallet = ({ accountsList }) => {
       },
     },
   }
-
-  const viewHide = localStorage.getItem('viewData');
-  console.log(viewHide);
-
+  
   // State for the closing/opening eye to see or hide the wallet value
+  const viewHide = localStorage.getItem('viewData');
   const [viewData, setViewData] = useState(viewHide);
   const handleShowData = () => {
     localStorage.setItem('viewData', !viewData);
@@ -105,15 +103,13 @@ const Wallet = ({ accountsList }) => {
           </span>
           <span className="wallet__doughnut__data__value">
             {viewHide === 'true'
-            ? `$${numberToComma(totalWalletValue.toFixed(2))}`
-            : `$${numberToComma(totalWalletValue.toFixed(2)).replaceAll(/[0123456789]/g, '*')}`
-            }
+            ? `${numberToComma(totalWalletValue.toFixed(2))}$`
+            : `${numberToComma(totalWalletValue.toFixed(2)).replaceAll(/[0123456789]/g, '*')}$`}
           </span>
           <span className="wallet__doughnut__data__converted">
             {viewHide === 'true'
             ? `${numberToComma(totalWalletValueConverted.toFixed(2))}€`
-            : `${numberToComma(totalWalletValueConverted.toFixed(2)).replaceAll(/[0123456789]/g, '*')}€`
-            }
+            : `${numberToComma(totalWalletValueConverted.toFixed(2)).replaceAll(/[0123456789]/g, '*')}€`}
           </span>
         </div>
       </div>
@@ -150,6 +146,7 @@ const Wallet = ({ accountsList }) => {
                 // Calculation of the percentage using the variables 'tempDeposits' and 'tempProfit'
                 percent={tempProfit / tempDeposits}
                 dollar={tempProfit}
+                viewHide={viewHide}
               />)
 
           }) : ''}

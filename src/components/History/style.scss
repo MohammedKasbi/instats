@@ -13,10 +13,10 @@
   
   &__graph {
     margin: 1.5em;
-    height: 500px;
+    height: 250em;
   }
 
-  &__account-list {
+  &__results {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -69,22 +69,6 @@
           padding: 0.5em;
         }
       }
-    }
-
-    thead tr {
-      border: 3px solid white;
-    }
-
-    th {
-      border: 1px solid;
-      padding: 1em;
-      width: 10em;
-      text-align: center;
-    }
-
-    td {
-      border: 1px solid;
-      padding: 0.4em;
     }
   }
 }

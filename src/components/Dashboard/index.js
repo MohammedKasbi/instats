@@ -19,6 +19,7 @@ import { getDaysArray } from '../../selectors/getDaysArray';
 import { dateCompare } from '../../selectors/dateCompare';
 import { useState } from 'react';
 import { dateCompare2 } from '../../selectors/dateCompare2';
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import 'moment/locale/fr';
 
 // Set moment local to french
@@ -46,19 +47,19 @@ const Dashboard = ({ accountsList }) => {
 
   // Calculation of total percentage of all accounts
   // The variable that will contain the total percentage of all accounts
-  let totalPercent = 0;
+  // let totalPercent = 0;
   // The variable that will contain the sum of benefit of all account
-  let totalProfit = 0;
+  // let totalProfit = 0;
   // The variable that will contain the sum of deposits of all account
-  let totalDeposits = 0;
+  // let totalDeposits = 0;
 
   // The function that calculate all profits from all accounts
-  totalProfit = calculateProfits(accountsList);
+  let totalProfit = calculateProfits(accountsList);
   // The function that calculate all deposits from all accounts
-  totalDeposits = calculateDeposits(accountsList);
+  let totalDeposits = calculateDeposits(accountsList);
 
   // Calculation of the percentage using the variables 'totalDeposits' and 'totalProfit'
-  totalPercent = totalProfit / totalDeposits;
+  let totalPercent = totalProfit / totalDeposits;
 
   // Array that contain all dates of all transactions on all of the accounts
   const dates = getDates(accountsList);
@@ -77,6 +78,14 @@ const Dashboard = ({ accountsList }) => {
     setDuration(evt.target.value);
   }
 
+  // State for the closing/opening eye to see or hide the wallet value
+  const viewHide = localStorage.getItem('viewData');
+  const [viewData, setViewData] = useState(viewHide);
+  const handleShowData = () => {
+    localStorage.setItem('viewData', !viewData);
+    setViewData(!viewData);
+  }
+
   // Data for the graph
   const lineData = {
     labels: allDatesGraph.slice(-duration),
@@ -86,8 +95,8 @@ const Dashboard = ({ accountsList }) => {
       fill: true,
       borderColor: 'rgb(75, 192, 192)',
       // borderWidth: 9,
-      pointRadius: 2,
-      pointHoverRadius: 7,
+      pointRadius: 3,
+      pointHoverRadius: 5,
       pointBackgroundColor: 'rgb(75, 192, 192)',
       tension: 0.15,
     }],
@@ -122,14 +131,34 @@ const Dashboard = ({ accountsList }) => {
     <div className="dashboard">
       <div className="dashboard__wallet">
         <div className="dashboard__wallet__dollars">
-          <span className="dashboard__wallet__dollars__tag">Portefeuille</span>
-          <span className="dashboard__wallet__dollars__value">${numberToComma(totalWalletValue.toFixed(2))}</span>
-          <span className="dashboard__wallet__dollars__converted">{numberToComma(totalWalletValueConverted.toFixed(2))}€</span>
+          <span className="dashboard__wallet__dollars__tag">Portefeuille
+            {viewHide === 'true'
+            ? <AiOutlineEye className="dashboard__wallet__dollars__tag__eye" onClick={handleShowData} />
+            : <AiOutlineEyeInvisible className="dashboard__wallet__dollars__tag__eye" onClick={handleShowData} />}
+          </span>
+          <span className="dashboard__wallet__dollars__value">
+            {viewHide === 'true'
+            ? `${numberToComma(totalWalletValue.toFixed(2))}$`
+            : `${numberToComma(totalWalletValue.toFixed(2)).replaceAll(/[0123456789]/g, '*')}$`}
+          </span>
+          <span className="dashboard__wallet__dollars__converted">
+            {viewHide === 'true'
+            ? `${numberToComma(totalWalletValueConverted.toFixed(2))}€`
+            : `${numberToComma(totalWalletValueConverted.toFixed(2)).replaceAll(/[0123456789]/g, '*')}€`}
+          </span>
         </div>
         <div className="dashboard__wallet__percentage">
           <span className="dashboard__wallet__percentage__tag">Evolution du portefeuille</span>
-          <span className="dashboard__wallet__percentage__value">+{Math.round(totalPercent * 10000) / 100}%</span>
-          <span className="dashboard__wallet__percentage__converted">+ ${numberToComma(totalProfit)}</span>
+          <span className="dashboard__wallet__percentage__value">
+            {viewHide === 'true'
+            ? `${totalPercent > 0 ? '+' : ''}${Math.round(totalPercent * 10000) / 100}%`
+            : `${totalPercent > 0 ? '+' : ''}${Math.round(totalPercent * 10000) / 100}%`.replaceAll(/[0123456789]/g, '*')}
+          </span>
+          <span className="dashboard__wallet__percentage__converted">
+            {viewHide === 'true'
+            ? `${totalProfit > 0 ? '+' : ''}${numberToComma(totalProfit)}$`
+            : `${totalProfit > 0 ? '+' : ''}${numberToComma(totalProfit).replaceAll(/[0123456789]/g, '*')}$`}
+          </span>
         </div>
       </div>
       <div className="dashboard__transactions">
@@ -137,7 +166,7 @@ const Dashboard = ({ accountsList }) => {
         {valuesList.slice(-7).map((element) => (
           <div key={element.id} className={'dashboard__transactions__results'}>
             <div>{moment(element.date).format('dd D MMM')}</div>
-            <div>${numberToComma(element.dayResult)}</div>
+            <div>{viewHide === 'true' ? numberToComma(element.dayResult) : numberToComma(element.dayResult).replaceAll(/[0123456789]/g, '*')}$</div>
           </div>
         ))}
       </div>

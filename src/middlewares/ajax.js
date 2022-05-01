@@ -67,6 +67,23 @@ const ajax = (store) => (next) => (action) => {
       console.log(err);
     });
   }
+  if (action.type === 'UPDATE_TRANSACTION') {
+    api.post(`/results/${action.bddId}`, {
+      dayResult: action.dayResult,
+      deposit: action.deposit,
+      withdrawal: action.withdrawal,
+      account: `/apip/accounts/${action.account}`,
+      transactionAt: action.transactionAt
+    })
+    .then((res) => {
+      // success
+      console.log(res.data);
+    })
+    .catch((err) => {
+      // error
+      console.log(err);
+    });
+  }
   next(action);
 };
 

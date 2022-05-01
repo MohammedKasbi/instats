@@ -9,8 +9,10 @@ import { numberToComma } from '../../selectors/numberToComma';
 import moment from "moment";
 import 'moment/locale/fr';
 
+// Set moment local to french
 moment.locale('fr');
 
+// == Component
 const History = ({ accountsList }) => {
   // Array that contain all dates of all transactions on all of the accounts
   const dates = getDates(accountsList);
@@ -82,8 +84,8 @@ const History = ({ accountsList }) => {
       <div className='history__graph'>
         <Line data={lineData} options={lineOptions} />
       </div>
-      <div className="history__account-list">
-        <div className="history__account-list__head">
+      <div className="history__results">
+        <div className="history__results__head">
             <div>Date</div>
             <div>Pourcentage</div>
             <div>Gain</div>
@@ -91,32 +93,32 @@ const History = ({ accountsList }) => {
             <div>Dépôts</div>
             <div>Retraits</div>
         </div>
-        <div className="history__account-list__body">
-        {valuesList.map((element, index, array) => {
-          let percent = 0;
-          if(array[index-1]) {
-            percent = element.dayResult / array[index-1].capital
-          } else {
-            percent = element.dayResult / element.deposit
-          }
+        <div className="history__results__body">
+          {valuesList.map((element, index, array) => {
+            let percent = 0;
+            if(array[index-1]) {
+              percent = ( ( element.dayResult + array[index-1].capital ) - array[index-1].capital ) / array[index-1].capital
+            } else {
+              percent = element.dayResult / element.deposit
+            }
 
-          let classNameResult = '';
-          if(element.dayResult > 0) {
-            classNameResult = '--positive';
-          } else if (element.dayResult < 0) {
-            classNameResult = '--negative';
-          }
-          return (
-            <div key={element.id} className={`history__account-list__result${classNameResult}`}>
-              <div>{moment(element.date).format('ddd D MMM Y')}</div>
-              <div>{numberToComma(Math.round(percent * 10000) / 100)} %</div>
-              <div>${numberToComma(element.dayResult)}</div>
-              <div>${numberToComma(element.capital)}</div>
-              <div>${numberToComma(element.deposit)}</div>
-              <div>${numberToComma(element.withdrawal)}</div>
-            </div>
-          )
-        })}
+            let classNameResult = '';
+            if(element.dayResult > 0) {
+              classNameResult = '--positive';
+            } else if (element.dayResult < 0) {
+              classNameResult = '--negative';
+            }
+            return (
+              <div key={element.id} className={`history__results__result${classNameResult}`}>
+                <div>{moment(element.date).format('ddd D MMM Y')}</div>
+                <div>{numberToComma(Math.round(percent * 10000) / 100)} %</div>
+                <div>${numberToComma(element.dayResult)}</div>
+                <div>${numberToComma(element.capital)}</div>
+                <div>${numberToComma(element.deposit)}</div>
+                <div>${numberToComma(element.withdrawal)}</div>
+              </div>
+            )
+          })}
         </div>
       </div>
     </div>

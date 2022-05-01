@@ -20,7 +20,7 @@ const AddTransaction = ({ accountsList }) => {
     evt.preventDefault();
     dispatch({
       type: 'ADD_TRANSACTION',
-      dayResult: newType === 'gain' || newType === 'loss' ? Number(newAmount) : 0,
+      dayResult: newType === 'gain' ? Number(newAmount) : newType === 'loss' ? Number(-newAmount) : 0,
       deposit: newType === 'deposit' ? Number(newAmount) : 0,
       withdrawal: newType === 'withdrawal' ? Number(newAmount) : 0,
       account: newAccount,

@@ -26,10 +26,6 @@ const App = () => {
   const accountsList = useSelector((state) => state.accounts.accountsList);
   const loading = useSelector((state) => state.accounts.loading);
 
-  //! A SUPPRIMER
-  console.log(accountsList); //! <<<<<<<<<<<<<<
-  //! A SUPPRIMER
-
   useEffect(() => {
     dispatch({
       type: 'FETCH_ACCOUNTS_LIST',
@@ -62,11 +58,11 @@ const App = () => {
         <Route path="/historique">
           <History accountsList={accountsList} />
         </Route>
+        <Route path="/compte/:id">
+          <DetailAccount accountsList={accountsList} />
+        </Route>
         <Route path="/profil">
           <Profile />
-        </Route>
-        <Route path="/compte/:id">
-          <DetailAccount />
         </Route>
         <Route path="/nouveau-compte">
           <AddAccount />

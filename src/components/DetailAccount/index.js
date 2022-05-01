@@ -1,16 +1,25 @@
 import './style.scss';
-import { useEffect } from 'react';
 import { Line  } from 'react-chartjs-2';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { getDaysArray } from '../../selectors/getDaysArray';
+import { useEffect, useState } from 'react';
+import { numberToComma } from '../../selectors/numberToComma';
+import moment from "moment";
+import 'moment/locale/fr';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import moment from 'moment/dist/moment';
+import { getDatesAccount } from '../../selectors/getDatesAccount';
+import { accountDateCompare } from '../../selectors/accountDateCompare';
+import { accountDateCompare2 } from '../../selectors/accountDateCompare2';
+import MoreInfo from '../Modals/MoreInfo';
 
+// Set moment local to french
+moment.locale('fr');
+
+// == Component
 const DetailAccount = () => {
   const dispatch = useDispatch();
-  const loading = useSelector((state) => state.account.loading);
-  const accountData = useSelector((state) => state.account.accountData);
-
+  const accountData = useSelector(state => state.account.accountData);
+  const loading = useSelector(state => state.account.loading);
   const {id} = useParams();
 
   useEffect(() => {
@@ -20,147 +29,39 @@ const DetailAccount = () => {
     });
   }, [dispatch, id]);
   
-  const lastDays = [];
-  const lastsValues = [];
-  const cumulatedValues = [];
-  const finalDataForHistory = [];
+  const [duration, setDuration] = useState(30);
+  const [openModal, setOpenModal] = useState(false);
+  const [infoId, setInfoId] = useState(undefined);
+  
+  if (loading) {
+    return <div>Chargement ...</div>
+  }
 
-  if (accountData) {
-    // ? prepare data to be sorted and de-duplicated
-    const history = [];
-    const tempDeposits = [];
-    const tempWithdrawals = [];
-    const tempResults = [];
-    accountData.deposit.forEach(elem => {
-      const {value, depositedAt: historyDate} = elem;
-      history.push({ value, historyDate });
-      tempDeposits.push({ value, historyDate });
-    });
-    accountData.result.forEach(elem => {
-      const {value, resultAt: historyDate} = elem;
-      history.push({ value, historyDate });
-      tempResults.push({ value, historyDate });
-    });
-    accountData.withdrawal.forEach(elem => {
-      const {value, withdrawnAt: historyDate} = elem;
-      history.push({ value: -value, historyDate });
-      tempWithdrawals.push({ value: -value, historyDate });
-    });
-    // ? end of prepare data to be sorted and de-duplicated
+  // Array that contain all dates of all transactions on all of the accounts
+  const dates = getDatesAccount(accountData);
+  // Sorting dates
+  dates.sort();
+  // Array that contain all of dates from the first transaction to the last
+  const allDates = getDaysArray(dates[0]);
+  const allDatesGraph = getDaysArray(dates[0], true);
 
-    // ? sort function
-    function compare( a, b ) {
-      if ( a.historyDate < b.historyDate ){
-        return -1;
-      }
-      if ( a.historyDate > b.historyDate ){
-        return 1;
-      }
-      return 0;
-    }
+  const graphValues = accountDateCompare(allDates, accountData);
+  const valuesList = accountDateCompare2(allDates, accountData);
 
-    history.sort(compare);
-    tempResults.sort(compare);
-    tempWithdrawals.sort(compare);
-    tempDeposits.sort(compare);
-    // ? end of sort
+  const handleChangeDuration = (evt) => {
+    setDuration(evt.target.value);
+  }
 
-    // ? date transform
-    const totalHistory = history.map(elem => {
-      return {
-        historyDate: moment(elem.historyDate).format('L'),
-        value: elem.value,
-      }
-    })
-    const resultsD = tempResults.map(elem => {
-      return {
-        historyDate: moment(elem.historyDate).format('L'),
-        value: elem.value,
-      }
-    })
-    const WithdrawalsD = tempWithdrawals.map(elem => {
-      return {
-        historyDate: moment(elem.historyDate).format('L'),
-        value: elem.value,
-      }
-    })
-    const DepositsD = tempDeposits.map(elem => {
-      return {
-        historyDate: moment(elem.historyDate).format('L'),
-        value: elem.value,
-      }
-    })
-    // ? end of date transform
-
-    // ? de-duplicate
-    function arrayUnique(array) {
-      let a = array.concat();
-      for(let i = 0; i < a.length; ++i) {
-        for(let j = i + 1; j < a.length; ++j) {
-          if(a[i].historyDate === a[j].historyDate) {
-            a[i].value += a[j].value;
-            a.splice(j--, 1);
-          }
-        }
-      }
-      return a;
-    }
-
-    const deDuplicate = arrayUnique(totalHistory);
-    const deDuplicateResults = arrayUnique(resultsD);
-    const deDuplicateWithdrawals = arrayUnique(WithdrawalsD);
-    const deDuplicateDeposits = arrayUnique(DepositsD);
-    // ? end of de-suplicate
-    
-    // ? data prepare for graph
-    deDuplicate.forEach(elem => {
-      lastDays.push(elem.historyDate);
-      lastsValues.push(elem.value);
-    });
-
-    lastsValues.reduce(function(a,b,i) { return cumulatedValues[i] = a + b; }, 0)
-    // ? end of data prepare for graph
-
-    for (let i = 0; i < deDuplicate.length; i++) {
-      finalDataForHistory.push({
-        date: deDuplicate[i].historyDate,
-        capital: cumulatedValues[i],
-      });
-    }
-
-    for (let i = 0; i < finalDataForHistory.length; i++) {
-      deDuplicateResults.forEach(elem => {
-        if (finalDataForHistory[i].date === elem.historyDate) {
-          finalDataForHistory[i].result = elem.value
-        }
-      });
-
-      deDuplicateWithdrawals.forEach(elem => {
-        if (finalDataForHistory[i].date === elem.historyDate) {
-          finalDataForHistory[i].withdrawal = elem.value
-        }
-      });
-
-      deDuplicateDeposits.forEach(elem => {
-        if (finalDataForHistory[i].date === elem.historyDate) {
-          finalDataForHistory[i].deposit = elem.value
-        }
-      });
-    };
-
-    // console.log(accountData);
-    // console.log(history);
-    console.log(deDuplicate);
-    console.log('results', deDuplicateResults);
-    console.log('withdraws', deDuplicateWithdrawals);
-    console.log(deDuplicateDeposits);
-    console.log(finalDataForHistory);
+  const handleMoreInfos = (ev) => {
+    setOpenModal(true);
+    setInfoId(ev.target.id);
+    console.log(ev.target.id);
   }
 
   const lineData = {
-    labels: lastDays,
+    labels: allDatesGraph.slice(-duration),
     datasets: [{
-      data: cumulatedValues,
+      data: graphValues.slice(-duration),
       // backgroundColor: 'linear-gradient(90deg, rgba(0,113,255,1) 0%, rgba(0,113,255,0) 100%);',
       fill: true,
       borderColor: 'rgb(75, 192, 192)',
@@ -173,6 +74,12 @@ const DetailAccount = () => {
   }
 
   const lineOptions = {
+    animations: {
+      tension: {
+        duration: 1000,
+        easing: 'easeInOutElastic',
+      }
+    },
     maintainAspectRatio: false,
     responsive: true,
     scales: {
@@ -188,40 +95,68 @@ const DetailAccount = () => {
     },
   }
 
-  if (loading) {
-    return <div>
-      Chargement...
-    </div>
-  }
-
+  // == Render
   return (
     <div className="detail-account">
+      <div className="detail-account__data-select">
+        <button value="7" onClick={handleChangeDuration}>S</button>
+        <button value="30" onClick={handleChangeDuration}>M</button>
+        <button value="90" onClick={handleChangeDuration}>3M</button>
+        <button value="" onClick={handleChangeDuration}>Tout</button>
+          {/* <select name="select-account" id="select-account" onChange={handleChange}>
+            <option value="all-accounts">Tous les comptes</option>
+            {accountsList.map((elem) => (
+              <option key={elem.id} value={elem.id}>{elem.name}</option>
+            ))}
+          </select> */}
+      </div>
       <div className='detail-account__graph'>
         <Line data={lineData} options={lineOptions} />
       </div>
-      <table className="detail-account__result">
-        <thead>
-          <tr className="detail-account__result__head">
-            <th>Date</th>
-            {/* <th>%</th> */}
-            <th>Gain</th>
-            <th>Capital</th>
-            <th>Dépôt</th>
-            <th>Retrait</th>
-          </tr>
-        </thead>
-        <tbody className="detail-account__result__body">
-          {finalDataForHistory.map((elem, index)=> (
-            <tr className="detail-account__result__data" key={index}>
-              <td>{elem.date}</td>
-              <td>{Math.round(elem.result * 100) / 100 || 0}</td>
-              <td>{Math.round(elem.capital * 100) / 100}</td>
-              <td>{Math.round(elem.deposit * 100) / 100 || 0}</td>
-              <td>{Math.round(elem.withdrawal * 100) / 100 || 0}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {openModal &&
+        <MoreInfo
+          closeModal={setOpenModal}
+          idOfTransac={infoId}
+          valuesList={valuesList}
+          accountName={accountData.name}
+        />}
+      <div className="detail-account__results">
+        <div className="detail-account__results__head">
+            <div>Date</div>
+            <div>Pourcentage</div>
+            <div>Gain</div>
+            <div>Capital</div>
+            <div>Dépôts</div>
+            <div>Retraits</div>
+        </div>
+        <div className="detail-account__results__body">
+          {valuesList.map((element, index, array) => {
+            let percent = 0;
+            if(array[index-1]) {
+              percent = element.dayResult / array[index-1].capital
+            } else {
+              percent = element.dayResult / element.deposit
+            }
+
+            let classNameResult = '';
+            if(element.dayResult > 0) {
+              classNameResult = '--positive';
+            } else if (element.dayResult < 0) {
+              classNameResult = '--negative';
+            }
+            return (
+              <div onClick={handleMoreInfos} key={index} className={`detail-account__results__result${classNameResult}`}>
+                <div id={index}>{moment(element.date).format('ddd D MMM Y')}</div>
+                <div id={index}>{numberToComma(Math.round(percent * 10000) / 100)} %</div>
+                <div id={index}>${numberToComma(element.dayResult)}</div>
+                <div id={index}>${numberToComma(element.capital)}</div>
+                <div id={index}>${numberToComma(element.deposit)}</div>
+                <div id={index}>${numberToComma(element.withdrawal)}</div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
     </div>
   );
 };
