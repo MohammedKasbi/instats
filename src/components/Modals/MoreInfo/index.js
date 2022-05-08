@@ -3,8 +3,9 @@ import moment from "moment";
 
 import './style.scss';
 
-const MoreInfo = ({ closeModal, idOfTransac, valuesList, accountName }) => {
+const MoreInfo = ({ closeModal, idOfTransac, valuesList, accountName, openModify }) => {
   const dayTransaction = valuesList[idOfTransac];
+  // console.log(dayTransaction);
   
   return (
     <div className="more-info">
@@ -15,17 +16,22 @@ const MoreInfo = ({ closeModal, idOfTransac, valuesList, accountName }) => {
         </div>
         <div className="more-info__body">
           <div className="more-info__body__head">
-            <div className="more-info__body__head__day-result">Transaction</div>
+            <div className="more-info__body__head__day-result">Gain/Perte</div>
+            <div className="more-info__body__head__day-result">Dépôt</div>
+            <div className="more-info__body__head__day-result">Retrait</div>
           </div>
           <div className="more-info__body__foot">
             <div className="more-info__body__foot__day-result">{dayTransaction.dayResult}$</div>
+            <div className="more-info__body__foot__day-result">{dayTransaction.deposit}$</div>
+            <div className="more-info__body__foot__day-result">{dayTransaction.withdrawal}$</div>
           </div>
-          <input type="number" value={dayTransaction.dayResult} />
         </div>
         <div className="more-info__foot">
           <button onClick={() => closeModal(false)}>Retour</button>
-          <button>Modifier</button>
-          <button>Supprimer</button>
+          <button onClick={() => {
+            closeModal(false)
+            openModify(true)
+          }}>Modifier</button>
         </div>
       </div>
     </div>

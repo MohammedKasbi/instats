@@ -11,6 +11,7 @@ import { getDatesAccount } from '../../selectors/getDatesAccount';
 import { accountDateCompare } from '../../selectors/accountDateCompare';
 import { accountDateCompare2 } from '../../selectors/accountDateCompare2';
 import MoreInfo from '../Modals/MoreInfo';
+import Modify from '../Modals/Modify';
 
 // Set moment local to french
 moment.locale('fr');
@@ -31,6 +32,7 @@ const DetailAccount = () => {
   
   const [duration, setDuration] = useState(30);
   const [openModal, setOpenModal] = useState(false);
+  const [openModalModify, setOpenModalModify] = useState(false);
   const [infoId, setInfoId] = useState(undefined);
   
   if (loading) {
@@ -119,6 +121,15 @@ const DetailAccount = () => {
           idOfTransac={infoId}
           valuesList={valuesList}
           accountName={accountData.name}
+          openModify={setOpenModalModify}
+        />}
+      {openModalModify &&
+        <Modify 
+          closeModal={setOpenModal}
+          idOfTransac={infoId}
+          valuesList={valuesList}
+          accountName={accountData.name}
+          openModify={setOpenModalModify}
         />}
       <div className="detail-account__results">
         <div className="detail-account__results__head">

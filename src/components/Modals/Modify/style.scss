@@ -1,4 +1,4 @@
-.more-info {
+.modify {
   position: absolute;
   display: flex;
   justify-content: center;
@@ -36,20 +36,17 @@
   &__body {
     text-align: center;
     display: flex;
-    flex-direction: column;
     width: 80%;
 
     &__head {
       display: flex;
+      flex-direction: column;
       justify-content: space-around;
-
-      // &__day-result {
-
-      // }
     }
 
     &__foot {
       display: flex;
+      flex-direction: column;
       justify-content: space-around;
     }
   }
