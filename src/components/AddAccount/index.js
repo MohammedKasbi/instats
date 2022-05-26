@@ -2,6 +2,9 @@
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 // == Imports : local
 // Styles
 
@@ -9,11 +12,14 @@ import { useDispatch } from "react-redux";
 const AddAccount = () => {
   const dispatch = useDispatch();
   const newAccountValue = useSelector((state) => state.addAccount.newAccountValue);
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
+    const idLoad = toast.loading('Création en cours, patiente...');
     dispatch({
       type: 'ADD_ACCOUNT',
       newAccountName: newAccountValue,
+      idLoad: idLoad,
     });
   }
 

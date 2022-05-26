@@ -2,8 +2,8 @@
 import { Route, Switch } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-// import moment from 'moment/dist/moment';
-// import 'moment/dist/locale/fr';
+import moment from 'moment/dist/moment';
+import 'moment/dist/locale/fr';
 
 // == Imports : local
 // Styles
@@ -19,6 +19,10 @@ import History from '../History';
 import Profile from '../Profile';
 import DetailAccount from '../DetailAccount';
 import AddAccount from '../AddAccount';
+import { ToastContainer } from 'react-toastify';
+
+// Set moment local to french
+moment.locale('fr');
 
 // == Component
 const App = () => {
@@ -41,6 +45,7 @@ const App = () => {
   // == Render
   return (
     <div className="App">
+      <ToastContainer />
       <Menu />
       <Switch>
         <Route exact path="/">

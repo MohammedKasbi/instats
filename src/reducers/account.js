@@ -10,6 +10,19 @@ const reducer = (state = initialState, action = {}) => {
         loading: false,
         accountData: action.account
       };
+    case 'CHANGE_VALUE':
+      return {
+        ...state,
+        [action.key]: action.value
+      };
+    case 'DEFAULT_VALUES_TRANSACTION':
+      return {
+        ...state,
+        newDayResult: action.newDayResult,
+        newDeposit: action.newDeposit,
+        newWithdrawal: action.newWithdrawal,
+        newDate: action.newDate,
+      };
     default:
       return state;
   }

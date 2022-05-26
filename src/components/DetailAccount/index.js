@@ -4,7 +4,6 @@ import { getDaysArray } from '../../selectors/getDaysArray';
 import { useEffect, useState } from 'react';
 import { numberToComma } from '../../selectors/numberToComma';
 import moment from "moment";
-import 'moment/locale/fr';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getDatesAccount } from '../../selectors/getDatesAccount';
@@ -12,9 +11,7 @@ import { accountDateCompare } from '../../selectors/accountDateCompare';
 import { accountDateCompare2 } from '../../selectors/accountDateCompare2';
 import MoreInfo from '../Modals/MoreInfo';
 import Modify from '../Modals/Modify';
-
-// Set moment local to french
-moment.locale('fr');
+import { toast } from 'react-toastify';
 
 // == Component
 const DetailAccount = () => {
@@ -27,7 +24,7 @@ const DetailAccount = () => {
     dispatch({
       type: 'FETCH_ACCOUNT',
       id: id
-    });
+    })
   }, [dispatch, id]);
   
   const [duration, setDuration] = useState(30);
@@ -58,8 +55,8 @@ const DetailAccount = () => {
     setOpenModal(true);
     setInfoId(ev.target.id);
     console.log(ev.target.id);
+    console.log(accountData[infoId]);
   }
-
   const lineData = {
     labels: allDatesGraph.slice(-duration),
     datasets: [{
@@ -97,6 +94,15 @@ const DetailAccount = () => {
     },
   }
 
+  const handleDeleteAccount = () => {
+    const toastData = toast.loading('Suppression en cours, patiente...');
+    dispatch({
+      type: 'DELETE_ACCOUNT',
+      accountId: id,
+      toastData: toastData,
+    })
+  }
+
   // == Render
   return (
     <div className="detail-account">
@@ -105,14 +111,9 @@ const DetailAccount = () => {
         <button value="30" onClick={handleChangeDuration}>M</button>
         <button value="90" onClick={handleChangeDuration}>3M</button>
         <button value="" onClick={handleChangeDuration}>Tout</button>
-          {/* <select name="select-account" id="select-account" onChange={handleChange}>
-            <option value="all-accounts">Tous les comptes</option>
-            {accountsList.map((elem) => (
-              <option key={elem.id} value={elem.id}>{elem.name}</option>
-            ))}
-          </select> */}
       </div>
       <div className='detail-account__graph'>
+        <button onClick={handleDeleteAccount}>Supprimer le compte</button>
         <Line data={lineData} options={lineOptions} />
       </div>
       {openModal &&

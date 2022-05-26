@@ -1,0 +1,56 @@
+.field {
+  margin: .3em .3em .3em 0;
+  position: relative;
+  width: 100%;
+
+  &-input {
+    width: 100%;
+    padding: .7em .7em .7em .3em;
+    font-size: 0.85em;
+    border: none;
+    border-bottom: 1px solid #535B66;
+    height: 2.5em;
+    background-color: #323741;
+    color: white;
+
+    &:focus {
+      border-color: #535B66;
+
+      & + .field-label {
+        color: #535B66;
+      }
+    }
+  }
+
+  &-label {
+    width: 100%;
+    display: none;
+    position: absolute;
+    top: .2rem;
+    left: 0rem;
+    color: #999;
+    font-size: .7em;
+    animation: labelSlideUpAndShow .3s;
+  }
+
+  &--has-content {
+    .field-label {
+      display: block;
+    }
+    .field-input {
+      padding: 1.4em .7em .4em;
+    }
+  }
+}
+
+
+@keyframes labelSlideUpAndShow{
+  0% {
+    transform: translateY(1em);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0em);
+    opacity: 1;
+  }
+}

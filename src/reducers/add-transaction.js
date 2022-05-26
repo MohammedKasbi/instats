@@ -1,6 +1,6 @@
 const initialState = {
   loading: true,
-  newType: 'deposit',
+  newType: 'gain',
   newAccount: '',
   newDate: '',
   newAmount: '',
@@ -31,6 +31,9 @@ const reducer = (state = initialState, action = {}) => {
     case 'CANCEL_VALUES':
       return {
         ...state,
+        newType: 'gain',
+        newAccount: '',
+        newDate: '',
         newAmount: '',
       }
     default:

@@ -5,7 +5,6 @@ import './style.scss';
 
 const MoreInfo = ({ closeModal, idOfTransac, valuesList, accountName, openModify }) => {
   const dayTransaction = valuesList[idOfTransac];
-  // console.log(dayTransaction);
   
   return (
     <div className="more-info">

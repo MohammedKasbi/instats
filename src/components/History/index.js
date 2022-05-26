@@ -24,8 +24,9 @@ const History = ({ accountsList }) => {
 
   const graphValues = dateCompare(allDates, accountsList);
   const valuesList = dateCompare2(allDates, accountsList);
-
+  // const showHideGraph = false;
   const [duration, setDuration] = useState(30);
+  const [showHideGraph, setShowHideGraph] = useState(true);
   const handleChangeDuration = (evt) => {
     setDuration(evt.target.value);
   }
@@ -69,21 +70,19 @@ const History = ({ accountsList }) => {
 
   return (
     <div className="history">
-      <div className="history__data-select">
-        <button value="7" onClick={handleChangeDuration}>S</button>
-        <button value="30" onClick={handleChangeDuration}>M</button>
-        <button value="90" onClick={handleChangeDuration}>3M</button>
-        <button value="" onClick={handleChangeDuration}>Tout</button>
-          {/* <select name="select-account" id="select-account" onChange={handleChange}>
-            <option value="all-accounts">Tous les comptes</option>
-            {accountsList.map((elem) => (
-              <option key={elem.id} value={elem.id}>{elem.name}</option>
-            ))}
-          </select> */}
-      </div>
-      <div className='history__graph'>
-        <Line data={lineData} options={lineOptions} />
-      </div>
+      <button onClick={setShowHideGraph}>Montrer/Cacher</button>
+      {showHideGraph
+      ? <>
+          <div className="history__data-select">
+            <button value="7" onClick={handleChangeDuration}>S</button>
+            <button value="30" onClick={handleChangeDuration}>M</button>
+            <button value="90" onClick={handleChangeDuration}>3M</button>
+            <button value="" onClick={handleChangeDuration}>Tout</button>
+          </div>
+          <div className='history__graph'>
+            <Line data={lineData} options={lineOptions} />
+          </div>
+        </>: ''}
       <div className="history__results">
         <div className="history__results__head">
             <div>Date</div>

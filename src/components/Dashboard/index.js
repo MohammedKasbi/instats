@@ -20,10 +20,6 @@ import { dateCompare } from '../../selectors/dateCompare';
 import { useState } from 'react';
 import { dateCompare2 } from '../../selectors/dateCompare2';
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import 'moment/locale/fr';
-
-// Set moment local to french
-moment.locale('fr');
 
 // == Component
 const Dashboard = ({ accountsList }) => {
@@ -165,7 +161,7 @@ const Dashboard = ({ accountsList }) => {
         <h2 className="dashboard__transactions__title">Derniers mouvements</h2>
         {valuesList.slice(-7).map((element) => (
           <div key={element.id} className={'dashboard__transactions__results'}>
-            <div>{moment(element.date).format('dd D MMM')}</div>
+            <div>{moment(element.date).format('dddd D')}</div>
             <div>{viewHide === 'true' ? numberToComma(element.dayResult) : numberToComma(element.dayResult).replaceAll(/[0123456789]/g, '*')}$</div>
           </div>
         ))}

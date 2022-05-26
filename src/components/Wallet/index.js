@@ -69,7 +69,7 @@ const Wallet = ({ accountsList }) => {
     responsive: true,
     plugins: {
       legend: {
-        // display: false,
+        display: false,
         position: 'bottom',
       },
     },
