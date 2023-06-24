@@ -2,13 +2,13 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const api = axios.create({
-  // baseURL: 'http://localhost:8000/api/v1',
-  baseURL: 'http://localhost:8000/apip',
+  baseURL: 'http://localhost:8000/api/v1/',
+  // baseURL: 'http://localhost:8000/apip',
 });
 
 const ajax = (store) => (next) => (action) => {
   if (action.type === 'FETCH_ACCOUNTS_LIST') {
-    api.get('/accounts')
+    api.get('/accounts/')
     .then((res) => {
       // success
       // console.log(res.data);
@@ -38,7 +38,7 @@ const ajax = (store) => (next) => (action) => {
     });
   }
   if (action.type === 'ADD_ACCOUNT') {
-    api.post('/accounts', {
+    api.post('/accounts/', {
       name: action.newAccountName
     })
     .then((res) => {
@@ -54,11 +54,11 @@ const ajax = (store) => (next) => (action) => {
     })
   }
   if (action.type === 'ADD_TRANSACTION') {
-    api.post('/results', {
+    api.post('/results/', {
       dayResult: action.dayResult,
       deposit: action.deposit,
       withdrawal: action.withdrawal,
-      account: `/apip/accounts/${action.account}`,
+      account: action.account,
       transactionAt: action.transactionAt
     })
     .then((res) => {
